@@ -1,7 +1,6 @@
 import type { LucideProps } from "lucide-react";
 import type {
   ForwardRefExoticComponent,
-  ReactNode,
   RefAttributes,
 } from "react";
 

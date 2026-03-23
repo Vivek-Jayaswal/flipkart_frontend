@@ -3,7 +3,7 @@ import { Button } from "../components/reusable.tsx/button";
 import { Link } from "react-router-dom";
 import type { LoginType } from "../types/navbar";
 import { FloatingInput } from "../components/reusable.tsx/floating-input";
-import { EyeOff, Eye } from "lucide-react";
+import { Eye } from "lucide-react";
 
 export function Login() {
   const [formData, setFormData] = useState<LoginType>({
@@ -23,7 +23,7 @@ export function Login() {
     const errField = ["email", "password"];
     const err: Record<string, string> = {};
 
-    errField.forEach((e, i) => {
+    errField.forEach((e) => {
       if (!formData[e as keyof typeof formData]) {
         err[e] = "This field is required";
       }

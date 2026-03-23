@@ -1,6 +1,3 @@
-import { NavLink } from "react-router-dom";
-
-import type { NavbarRightSideType } from "../../types/navbar";
 import { Input } from "../reusable.tsx/input";
 import {
   CircleUserRound,

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Input } from "../components/reusable.tsx/input";
 import { Button } from "../components/reusable.tsx/button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function Signup() {
   const [input, setInput] = useState<string>("");
