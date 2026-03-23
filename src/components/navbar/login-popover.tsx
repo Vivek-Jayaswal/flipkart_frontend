@@ -1,4 +1,11 @@
-import { ChevronDown, CircleUserRound, ShoppingCart } from "lucide-react";
+import {
+  CircleUserRound,
+  Gift,
+  Heart,
+  Package,
+  PackageOpen,
+  ShoppingCart,
+} from "lucide-react";
 import type { NavbarRightSideType } from "../../types/navbar";
 import { Link, NavLink } from "react-router-dom";
 
@@ -11,27 +18,27 @@ const pages: NavbarRightSideType[] = [
   {
     name: "Orders",
     pathName: "orders",
-    icon: "",
+    icon: Package,
   },
   {
     name: "Wishlist",
     pathName: "wishlist",
-    icon: ShoppingCart,
+    icon: Heart,
   },
   {
     name: "Rewards",
     pathName: "rewards",
-    icon: ShoppingCart,
+    icon: Gift,
   },
   {
     name: "Gift Cards",
     pathName: "gift-cards",
-    icon: ShoppingCart,
+    icon: Gift,
   },
   {
     name: "Become a Seller",
     pathName: "become-a-seller",
-    icon: ShoppingCart,
+    icon: PackageOpen,
   },
   {
     name: "Wishlist",
