@@ -1,7 +1,4 @@
-import { NavLink } from "react-router-dom";
-
-import type { NavbarRightSideType } from "../../types/navbar";
-import { Input } from "../reusable.tsx/search-input";
+import { Input } from "../reusable.tsx/input";
 import {
   CircleUserRound,
   Search,
@@ -20,7 +17,10 @@ export function NavBar() {
       <TopBar />
       <div className="border-b border-gray-200 w-full grid grid-cols-[3fr_1.3fr] py-4">
         <div className="relative">
-          <Input className="pl-10 pr-4 w-full rounded border border-gray-400" value="dfsdf" />
+          <Input
+            className="pl-10 pr-4 w-full rounded border border-gray-400"
+            value="dfsdf"
+          />
           <Search
             size={18}
             className="text-gray-400 absolute top-1/5 left-2 "

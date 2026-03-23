@@ -1,4 +1,4 @@
-import { CircleUserRound, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import type { NavbarRightSideType } from "../../types/navbar";
 import { NavLink } from "react-router-dom";
 

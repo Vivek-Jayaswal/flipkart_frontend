@@ -1,7 +1,6 @@
 import type { LucideProps } from "lucide-react";
 import type {
   ForwardRefExoticComponent,
-  ReactNode,
   RefAttributes,
 } from "react";
 
@@ -13,4 +12,9 @@ export type NavbarRightSideType = {
         Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
       >
     | string;
+};
+
+export type LoginType = {
+  email: string;
+  password: string;
 };
