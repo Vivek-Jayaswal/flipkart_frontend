@@ -32,7 +32,7 @@ export function MorePopover() {
         <h2 className="pl-3 font-semibold">More</h2>
       </div>
 
-      <ul className="space-y-1 text-sm">
+      <ul className="space-y-1 text-sm z-50">
         {pages.map((d, i) => {
           const Icon = d?.icon;
           return (

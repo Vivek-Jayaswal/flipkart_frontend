@@ -57,7 +57,7 @@ export function Signup() {
                 <span className="text-blue-500">Privacy Policy.</span>
               </p>
               <Button className="mt-4 px-4 py-2 w-full bg-[#FB641B] border-none text-white font-bold rounded-none">
-                Login
+                Sign Up
               </Button>
               <Button
                 onClick={handleBacktoLogin}

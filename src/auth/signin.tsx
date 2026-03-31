@@ -3,17 +3,24 @@ import { Button } from "../components/reusable.tsx/button";
 import { Link } from "react-router-dom";
 import type { LoginType } from "../types/navbar";
 import { FloatingInput } from "../components/reusable.tsx/floating-input";
-import { Eye } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 
 export function Login() {
   const [formData, setFormData] = useState<LoginType>({
     email: "",
     password: "",
   });
+  const [passwordType, setPasswordType] = useState<"password" | "text">(
+    "password",
+  );
+
   const [error, setError] = useState<Record<string, string>>({});
 
-  console.log(formData);
-  console.log("err", error);
+  const handleTogglePassword = () => {
+    passwordType === "password"
+      ? setPasswordType("text")
+      : setPasswordType("password");
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -70,11 +77,10 @@ export function Login() {
               label="Enter Email"
               id="login-input"
               name="email"
-              placeholder=" "
+              placeholder=""
               value={formData.email}
               onChange={handleInputChange}
               className="peer w-full border-b outline-none"
-              RightIcon={Eye}
             />
 
             <FloatingInput
@@ -84,7 +90,9 @@ export function Login() {
               value={formData.password}
               onChange={handleInputChange}
               className="peer w-full border-b outline-none"
-              RightIcon={Eye}
+              RightIcon={passwordType === "password" ? EyeOff : Eye}
+              togglePassword={handleTogglePassword}
+              type={passwordType}
             />
 
             <div className="w-full">
