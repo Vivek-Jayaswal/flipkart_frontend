@@ -49,7 +49,7 @@ const pages: NavbarRightSideType[] = [
 
 export function LoginPopover() {
   return (
-    <div className="absolute top-5 -left-8 mt-2 w-56 bg-white shadow-lg rounded-lg p-6 pl-3 z-50">
+    <div className="absolute top-5 -left-8 mt-2 w-56 bg-white shadow-lg rounded-lg p-6 pl-3 z-[1000]">
       <div className="flex justify-between items-center mb-3">
         <h2 className="pl-3">New customer?</h2>
         <Link to={"/sign-up"} className="text-blue-600 text-sm font-medium">

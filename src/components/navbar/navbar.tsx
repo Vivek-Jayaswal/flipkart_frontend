@@ -13,7 +13,7 @@ import { CartPopover } from "./cart-popover";
 
 export function NavBar() {
   return (
-    <div className="sticky top-0 left-0 bg-white">
+    <div className="sticky top-0 left-0 bg-white z-[999]">
       <TopBar />
       <div className="border-b border-gray-200 w-full grid grid-cols-[3fr_1.3fr] py-4">
         <div className="relative">

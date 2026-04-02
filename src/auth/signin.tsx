@@ -22,6 +22,9 @@ export function Login() {
       : setPasswordType("password");
   };
 
+  console.log(error);
+  
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
