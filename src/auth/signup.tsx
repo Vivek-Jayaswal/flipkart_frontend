@@ -2,13 +2,20 @@ import { useState } from "react";
 import { Input } from "../components/reusable.tsx/input";
 import { Button } from "../components/reusable.tsx/button";
 import { useNavigate } from "react-router-dom";
+import { VerifyOtp } from "./verify-otp";
+import { RegisterDetails } from "./register-details";
 
 export function Signup() {
   const [input, setInput] = useState<string>("");
+  const [step, setStep] = useState<"one" | "two" | "three">("one");
   const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
+  };
+
+  const handleNextStep = (s: "one" | "two" | "three") => {
+    setStep(s);
   };
 
   const handleBacktoLogin = () => {
@@ -34,14 +41,18 @@ export function Signup() {
             />
           </div>
         </div>
-        <div className="p-6 px-10 w-full flex flex-col text-gr justify-between items-start">
-          <div className="pt-10 flex flex-col items-start w-full gap-10">
+
+        {step === "one" && (
+          <form
+            action=""
+            className="p-6 px-10 pt-10 flex flex-col items-start w-full gap-10"
+          >
             <div className="relative w-full">
               <Input
                 id="login-input"
                 value={input}
                 onChange={handleInputChange}
-                className="peer w-full border-b outline-none"
+                className="peer w-full border-b border-gray-400 outline-none"
               />
               <label
                 htmlFor="login-input"
@@ -50,14 +61,18 @@ export function Signup() {
                 Enter Email
               </label>
             </div>
+
             <div className="w-full">
               <p className="text-xs font-medium text-gray-400">
                 By continuing, you agree to Flipkart's clone{" "}
                 <span className="text-blue-500">Terms of Use</span> and{" "}
                 <span className="text-blue-500">Privacy Policy.</span>
               </p>
-              <Button className="mt-4 px-4 py-2 w-full bg-[#FB641B] border-none text-white font-bold rounded-none">
-                Login
+              <Button
+                onClick={() => handleNextStep("two")}
+                className="mt-4 px-4 py-2 w-full bg-[#FB641B] border-none text-white font-bold rounded-none"
+              >
+                Continue
               </Button>
               <Button
                 onClick={handleBacktoLogin}
@@ -66,8 +81,20 @@ export function Signup() {
                 Back to Login
               </Button>
             </div>
+          </form>
+        )}
+
+        {step === "two" && (
+          <div className="p-6 px-10 w-full flex flex-col text-gr justify-between items-start">
+            <VerifyOtp handleNextStep={handleNextStep} step={step} />
           </div>
-        </div>
+        )}
+
+        {step === "three" && (
+          <div className="p-6 px-10 w-full flex flex-col text-gr justify-between items-start">
+            <RegisterDetails handleNextStep={handleNextStep} />
+          </div>
+        )}
       </div>
     </div>
   );
