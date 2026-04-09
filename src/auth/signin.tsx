@@ -23,7 +23,6 @@ export function Login() {
   };
 
   console.log(error);
-  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -106,7 +105,7 @@ export function Login() {
               </p>
               <Button
                 type="submit"
-                className="mt-4 px-4 py-2 w-full bg-[#FB641B] border-none text-white font-bold rounded-none"
+                className="mt-4 px-4 py-2 w-full bg-[#FB641B] hover:bg-[#FB641B] border-none text-white font-bold rounded-none"
               >
                 Login
               </Button>

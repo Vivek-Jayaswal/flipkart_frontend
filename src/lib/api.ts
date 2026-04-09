@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const API = axios.create({
+const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
 
-API.interceptors.request.use(
+api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
 
@@ -30,7 +30,7 @@ const onRefreshed = (newToken: string) => {
   refreshSubscribers = [];
 };
 
-API.interceptors.response.use(
+api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
@@ -60,8 +60,6 @@ API.interceptors.response.use(
 
           // logout user
           localStorage.removeItem("accessToken");
-          window.location.href = "/login";
-
           return Promise.reject(err);
         }
       }
@@ -70,7 +68,7 @@ API.interceptors.response.use(
       return new Promise((resolve) => {
         subscribeTokenRefresh((token: string) => {
           originalRequest.headers.Authorization = `Bearer ${token}`;
-          resolve(API(originalRequest));
+          resolve(api(originalRequest));
         });
       });
     }
@@ -79,4 +77,4 @@ API.interceptors.response.use(
   },
 );
 
-export default API;
+export default api;

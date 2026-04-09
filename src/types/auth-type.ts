@@ -1,7 +1,8 @@
 export type RegisterUserType = {
-    user: "seller",
-    fullName: string,
-    mobile: string,
-    address: string,
-    password: string,
-} 
+  role: "seller" | "buyer" | "admin";
+  name: string;
+  mobile: string;
+  address: string;
+  password: string;
+  gmail: string;
+};

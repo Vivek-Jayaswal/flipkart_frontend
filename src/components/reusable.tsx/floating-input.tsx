@@ -42,7 +42,13 @@ export const FloatingInput = ({
       />
 
       {RightIcon && (
-        <Button onClick={togglePassword} className="absolute right-2 top-4 border-none">
+        <Button
+          size="icon"
+          variant="outline"
+          type="button"
+          onClick={togglePassword}
+          className="absolute right-2 top-4 hover:bg-transparent p-0 border-none"
+        >
           <RightIcon size={18} />
         </Button>
       )}
