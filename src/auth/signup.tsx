@@ -4,18 +4,49 @@ import { Button } from "../components/reusable.tsx/button";
 import { useNavigate } from "react-router-dom";
 import { VerifyOtp } from "./verify-otp";
 import { RegisterDetails } from "./register-details";
+import { validateEmail } from "../utils/email-validator";
+import { sendRegistrationRequest } from "../services/mutation/registration";
+import { toast } from "react-toastify";
+import { useMutation } from "@tanstack/react-query";
 
 export function Signup() {
   const [input, setInput] = useState<string>("");
+  const [isValidEmail, setIsValidEmail] = useState<boolean>(true);
   const [step, setStep] = useState<"one" | "two" | "three">("one");
   const navigate = useNavigate();
+  const [error, setError] = useState<string>("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
+    setIsValidEmail(validateEmail(e.target.value));
+    setError("");
   };
 
   const handleNextStep = (s: "one" | "two" | "three") => {
     setStep(s);
+  };
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (d: string) => sendRegistrationRequest(d),
+    onSuccess: () => {
+      toast.success("OTP sent successfully to your email!");
+      setStep("two");
+    },
+  });
+
+  const handleSendOtp = (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!input) {
+      setError("Email is required");
+      return;
+    }
+
+    if (!isValidEmail) {
+      setError("Please enter a valid email");
+      return;
+    }
+
+    mutate(input);
   };
 
   const handleBacktoLogin = () => {
@@ -45,6 +76,7 @@ export function Signup() {
         {step === "one" && (
           <form
             action=""
+            onSubmit={handleSendOtp}
             className="p-6 px-10 pt-10 flex flex-col items-start w-full gap-10"
           >
             <div className="relative w-full">
@@ -56,10 +88,16 @@ export function Signup() {
               />
               <label
                 htmlFor="login-input"
-                className="peer-focus:-top-4 text-gray-400 absolute top-2 left-0 transition-all"
+                className={`${input ? "-top-4" : "top-2"} absolute peer-focus:-top-4 text-gray-400 left-0 transition-all`}
               >
                 Enter Email
               </label>
+              {!isValidEmail && (
+                <p className="text-red-500 text-xs mt-1">
+                  Please enter a valid email
+                </p>
+              )}
+              {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
             </div>
 
             <div className="w-full">
@@ -69,14 +107,15 @@ export function Signup() {
                 <span className="text-blue-500">Privacy Policy.</span>
               </p>
               <Button
-                onClick={() => handleNextStep("two")}
-                className="mt-4 px-4 py-2 w-full bg-[#FB641B] border-none text-white font-bold rounded-none"
+                disabled={isPending}
+                className={`${isPending ? "opacity-50 cursor-not-allowed" : ""} mt-4 px-4 py-2 w-full bg-[#FB641B] border-none text-white font-bold rounded-none`}
               >
-                Continue
+                {isPending ? "Sending OTP..." : "Continue"}
               </Button>
               <Button
                 onClick={handleBacktoLogin}
-                className="px-4 py-2 w-full bg-white text-blue-500 shadow-[0px_0px_10px_#e5e7eb] border-none mt-4 font-bold rounded-none"
+                className="px-4 py-2 w-full bg-white text-blue-500 hover:bg-transparent shadow-[0px_0px_10px_#e5e7eb] border-none mt-4 font-bold rounded-none"
+                variant="outline"
               >
                 Back to Login
               </Button>
@@ -86,13 +125,17 @@ export function Signup() {
 
         {step === "two" && (
           <div className="p-6 px-10 w-full flex flex-col text-gr justify-between items-start">
-            <VerifyOtp handleNextStep={handleNextStep} step={step} />
+            <VerifyOtp
+              handleNextStep={handleNextStep}
+              step={step}
+              gmail={input}
+            />
           </div>
         )}
 
         {step === "three" && (
           <div className="p-6 px-10 w-full flex flex-col text-gr justify-between items-start">
-            <RegisterDetails handleNextStep={handleNextStep} />
+            <RegisterDetails handleNextStep={handleNextStep} gmail={input} />
           </div>
         )}
       </div>
