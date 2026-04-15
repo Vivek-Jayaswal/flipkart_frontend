@@ -15,6 +15,6 @@ export type NavbarRightSideType = {
 };
 
 export type LoginType = {
-  email: string;
+  gmail: string;
   password: string;
 };
