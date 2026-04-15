@@ -1,20 +1,38 @@
 import React, { useState } from "react";
 import { Button } from "../components/reusable.tsx/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { LoginType } from "../types/navbar";
 import { FloatingInput } from "../components/reusable.tsx/floating-input";
 import { Eye, EyeOff } from "lucide-react";
+import { validateEmail } from "../utils/email-validator";
+import { useMutation } from "@tanstack/react-query";
+import { sendUserLogin } from "../services/mutation/login";
+import { toast } from "react-toastify";
+import { loginUser } from "../feature/authSlice/authSlice";
+import { useDispatch } from "react-redux";
+
+export type LoginPayload = { gmail: string; passward: string };
 
 export function Login() {
   const [formData, setFormData] = useState<LoginType>({
-    email: "",
+    gmail: "",
     password: "",
   });
   const [passwordType, setPasswordType] = useState<"password" | "text">(
     "password",
   );
-
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
   const [error, setError] = useState<Record<string, string>>({});
+  const [isValidEmail, setIsValidEmail] = useState<boolean>(true);
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: LoginPayload) => sendUserLogin(data),
+    onSuccess: (res) => {
+      dispatch(loginUser(res));
+      toast.success("Login Successfully");
+      navigate("/");
+    },
+  });
 
   const handleTogglePassword = () => {
     passwordType === "password"
@@ -22,14 +40,14 @@ export function Login() {
       : setPasswordType("password");
   };
 
-  console.log(error);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setIsValidEmail(validateEmail(e.target.value));
+    setError((prev) => ({ ...prev, [e.target.name]: "" }));
   };
 
   const validateForm = () => {
-    const errField = ["email", "password"];
+    const errField = ["gmail", "password"];
     const err: Record<string, string> = {};
 
     errField.forEach((e) => {
@@ -49,7 +67,11 @@ export function Login() {
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateForm()) return;
-    console.log("submitted");
+    const data: LoginPayload = {
+      gmail: formData.gmail,
+      passward: formData.password,
+    };
+    mutate(data);
   };
 
   return (
@@ -75,27 +97,42 @@ export function Login() {
           className="p-6 px-10 w-full flex flex-col text-gr justify-between items-start"
         >
           <div className="pt-10 flex flex-col items-start w-full gap-8">
-            <FloatingInput
-              label="Enter Email"
-              id="login-input"
-              name="email"
-              placeholder=""
-              value={formData.email}
-              onChange={handleInputChange}
-              className="peer w-full border-b outline-none"
-            />
+            <div className="w-full">
+              <FloatingInput
+                label="Enter Gmail"
+                id="login-input"
+                name="gmail"
+                placeholder=""
+                value={formData.gmail}
+                onChange={handleInputChange}
+                className="peer w-full border-b outline-none"
+              />
+              {!isValidEmail && (
+                <p className="text-red-500 text-xs mt-1">
+                  Please enter a valid email
+                </p>
+              )}
+              {error.gmail && (
+                <p className="text-red-500 text-xs mt-1">{error.gmail}</p>
+              )}
+            </div>
 
-            <FloatingInput
-              id="login-password"
-              label="Enter Password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              className="peer w-full border-b outline-none"
-              RightIcon={passwordType === "password" ? EyeOff : Eye}
-              togglePassword={handleTogglePassword}
-              type={passwordType}
-            />
+            <div className="w-full">
+              <FloatingInput
+                id="login-password"
+                label="Enter Password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className="peer w-full border-b outline-none"
+                RightIcon={passwordType === "password" ? EyeOff : Eye}
+                togglePassword={handleTogglePassword}
+                type={passwordType}
+              />
+              {error.password && (
+                <p className="text-red-500 text-xs mt-1">{error.password}</p>
+              )}
+            </div>
 
             <div className="w-full">
               <p className="text-xs font-medium text-gray-400">
@@ -107,7 +144,7 @@ export function Login() {
                 type="submit"
                 className="mt-4 px-4 py-2 w-full bg-[#FB641B] hover:bg-[#FB641B] border-none text-white font-bold rounded-none"
               >
-                Login
+                {isPending ? "Logging in..." : "Login"}
               </Button>
             </div>
           </div>

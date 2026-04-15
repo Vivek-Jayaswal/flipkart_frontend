@@ -40,10 +40,7 @@ export function MorePopover() {
               key={i}
               className="hover:bg-linear-to-r from-blue-100 from-65% to-gray-100 p-2 pl-3 rounded"
             >
-              <NavLink
-                to={d.pathName}
-                className={"flex items-center gap-2"}
-              >
+              <NavLink to={d.pathName} className={"flex items-center gap-2"}>
                 {d.icon && (
                   <span>
                     <Icon size={18} />

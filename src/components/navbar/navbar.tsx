@@ -10,16 +10,20 @@ import { LoginPopover } from "./login-popover";
 import { MorePopover } from "./more-popover";
 import TopBar from "./top-bar";
 import { CartPopover } from "./cart-popover";
+import { useState } from "react";
 
 export function NavBar() {
+  const [input, setInput] = useState<string>("");
+
   return (
     <div className="sticky top-0 left-0 bg-white z-[999]">
       <TopBar />
       <div className="border-b border-gray-200 w-full grid grid-cols-[3fr_1.3fr] py-4">
         <div className="relative">
           <Input
-            className="pl-10 pr-4 w-full rounded border border-gray-400"
-            value="dfsdf"
+            className="pl-10 focus:outline-none pr-4 w-full rounded border border-gray-400"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
           />
           <Search
             size={18}
