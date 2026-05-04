@@ -5,6 +5,7 @@ type FloatingInputProps = {
   label: string;
   id: string;
   error?: boolean;
+  isBgLable?: boolean;
   LeftIcon?: React.ElementType;
   RightIcon?: React.ElementType;
   togglePassword?: () => void;
@@ -18,6 +19,7 @@ export const FloatingInput = ({
   LeftIcon,
   RightIcon,
   togglePassword,
+  isBgLable,
   ...props
 }: FloatingInputProps) => {
   return (
@@ -56,9 +58,13 @@ export const FloatingInput = ({
       <label
         htmlFor={id}
         className={`
-          absolute left-0 transition-all duration-200 text-gray-400
-          ${value ? "-top-4" : "top-2"}
-          peer-focus:-top-4
+            absolute left-0 px-1 text-gray-400 transition-all duration-200 top-2 peer-placeholder-shown:top-2
+            ${
+              isBgLable
+                ? "peer-focus:-top-3 peer-[&:not(:placeholder-shown)]:-top-3 left-4 text-sm peer-focus:bg-white peer-[&:not(:placeholder-shown)]:bg-white"
+                : "peer-focus:-top-4 peer-[&:not(:placeholder-shown)]:-top-4"
+            }
+
         `}
       >
         {label}

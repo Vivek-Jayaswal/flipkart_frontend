@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Button } from "../components/reusable.tsx/button";
+import { Button } from "../components/reusable/button";
 import { toast } from "react-toastify";
 import {
   sendRegistrationRequest,
