@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button } from "../components/reusable.tsx/button";
-import { FloatingInput } from "../components/reusable.tsx/floating-input";
+import { Button } from "../components/reusable/button";
+import { FloatingInput } from "../components/reusable/floating-input";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import type { RegisterUserType } from "../types/auth-type";
 import { RegisterUserRequest } from "../services/mutation/registration";

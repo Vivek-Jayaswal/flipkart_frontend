@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Button } from "../components/reusable.tsx/button";
+import { Button } from "../components/reusable/button";
 import { Link, useNavigate } from "react-router-dom";
 import type { LoginType } from "../types/navbar";
-import { FloatingInput } from "../components/reusable.tsx/floating-input";
+import { FloatingInput } from "../components/reusable/floating-input";
 import { Eye, EyeOff } from "lucide-react";
 import { validateEmail } from "../utils/email-validator";
 import { useMutation } from "@tanstack/react-query";
@@ -21,7 +21,7 @@ export function Login() {
   const [passwordType, setPasswordType] = useState<"password" | "text">(
     "password",
   );
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState<Record<string, string>>({});
   const [isValidEmail, setIsValidEmail] = useState<boolean>(true);

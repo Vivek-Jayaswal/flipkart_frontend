@@ -1,4 +1,4 @@
-import { Input } from "../reusable.tsx/input";
+import { Input } from "../reusable/input";
 import {
   CircleUserRound,
   Search,

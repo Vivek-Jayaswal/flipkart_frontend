@@ -1,5 +1,5 @@
 import { ShoppingCart } from "lucide-react";
-import type { NavbarRightSideType } from "../../types/navbar";
+import type { NavbarRightSideType } from "../../../types/navbar";
 import { NavLink } from "react-router-dom";
 
 const pages: NavbarRightSideType[] = [
@@ -25,7 +25,7 @@ const pages: NavbarRightSideType[] = [
   },
 ];
 
-export function MorePopover() {
+export function LearnPopover() {
   return (
     <div className="absolute top-5 -left-8 mt-2 w-56 bg-white shadow-lg rounded-lg p-6 pl-3 z-50">
       <div className="flex justify-between items-center mb-3">

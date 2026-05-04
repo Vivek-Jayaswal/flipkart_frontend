@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Input } from "../components/reusable.tsx/input";
-import { Button } from "../components/reusable.tsx/button";
+import { Input } from "../components/reusable/input";
+import { Button } from "../components/reusable/button";
 import { useNavigate } from "react-router-dom";
 import { VerifyOtp } from "./verify-otp";
 import { RegisterDetails } from "./register-details";
