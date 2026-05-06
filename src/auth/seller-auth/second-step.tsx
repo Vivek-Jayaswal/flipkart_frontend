@@ -1,30 +1,30 @@
-import React, { useEffect, useState, type SetStateAction } from "react";
+import React, { useEffect, type SetStateAction } from "react";
 import { FloatingInput } from "../../components/reusable/floating-input";
 import { Button } from "../../components/reusable/button";
+import type { Action } from "./signup";
+import type { SignupFormType } from "../../types/seller/signup";
 
 type Props = {
   handleNextStep: React.Dispatch<SetStateAction<"first" | "second">>;
-  handleStepCompleted: React.Dispatch<SetStateAction<string[]>>;
+  handleStepCompleted?: React.Dispatch<SetStateAction<string[]>>;
+  dispatch: React.Dispatch<Action>;
+  state: SignupFormType;
 };
 
 export const SellerSecondStepData = ({
   handleNextStep,
-  handleStepCompleted,
+  state,
+  dispatch,
 }: Props) => {
-  const [state, setFormData] = useState({
-    email: "",
-    mobile: "",
-    password: "",
-    confirmPassword: "",
-  });
-
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    dispatch({
+      type: "INPUT_TEXT",
+      payload: {
+        name: name,
+        value: value,
+      },
+    });
   };
 
   useEffect(() => {
@@ -33,47 +33,76 @@ export const SellerSecondStepData = ({
 
   return (
     <div className="space-y-4">
-      <form action="">
+      <form action="" className="space-y-4">
         <FloatingInput
           className="border rounded px-4"
-          label="Enter Email"
-          id="df"
+          label="Enter Business Name"
+          id="businessName"
           isBgLable={true}
-          value={state.email}
+          value={state.formData.businessName}
           onChange={handleOnChange}
-          name="email"
+          name="businessName"
         />
         <FloatingInput
           isBgLable={true}
           className="border rounded px-4"
-          label="Enter Mobile Number"
-          id="df"
-          value={state.mobile}
-          name="mobile"
+          label="Enter Store Name"
+          id="storeName"
+          value={state.formData.storeName}
+          name="storeName"
           onChange={handleOnChange}
         />
         <FloatingInput
           isBgLable={true}
           className="border rounded px-4"
-          label="Create Password"
-          id="df"
-          value={state.password}
-          name="password"
+          label="Enter Business Type"
+          id="businessType"
+          value={state.formData.businessType}
+          name="businessType"
           onChange={handleOnChange}
         />
         <FloatingInput
           className="border rounded px-4"
           isBgLable={true}
-          label="Confirm Password"
-          id="df"
-          name="confirmPassword"
-          value={state.confirmPassword}
+          label="Enter Tax Details"
+          id="taxDetails"
+          name="taxDetails"
+          value={state.formData.taxDetails}
+          onChange={handleOnChange}
+        />
+        <FloatingInput
+          className="border rounded px-4"
+          isBgLable={true}
+          label="Enter Store Address"
+          id="storeAddress"
+          name="storeAddress"
+          value={state.formData.storeAddress}
+          onChange={handleOnChange}
+        />
+        <FloatingInput
+          className="border rounded px-4"
+          isBgLable={true}
+          label="Enter Bank Details"
+          id="bankDetails"
+          name="bankDetails"
+          value={state.formData.bankDetails}
+          onChange={handleOnChange}
+        />
+        <FloatingInput
+          className="border rounded px-4"
+          isBgLable={true}
+          label="Enter Address"
+          id="address"
+          name="address"
+          value={state.formData.address}
           onChange={handleOnChange}
         />
 
-        <div>
-          <Button onClick={() => handleNextStep("first")}>Back</Button>
-          <Button>Submit</Button>
+        <div className="space-x-4">
+          <Button variant="outline" onClick={() => handleNextStep("first")}>
+            Back
+          </Button>
+          <Button variant="outline">Submit</Button>
         </div>
       </form>
     </div>

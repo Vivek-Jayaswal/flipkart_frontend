@@ -1,32 +1,32 @@
-import React, { useState, type SetStateAction } from "react";
+import React, { type SetStateAction } from "react";
 import { FloatingInput } from "../../components/reusable/floating-input";
 import { Button } from "../../components/reusable/button";
+import type { Action } from "./signup";
+import type { SignupFormType } from "../../types/seller/signup";
 
 type Props = {
   handleNextStep: React.Dispatch<SetStateAction<"first" | "second">>;
   step?: string;
-  handleStepCompleted: React.Dispatch<SetStateAction<string[]>>;
+  dispatch: React.Dispatch<Action>;
+  state: SignupFormType;
+  handleStepCompleted?: React.Dispatch<SetStateAction<string[]>>;
 };
 
 export const SellerFirstStepData = ({
   handleNextStep,
-  step,
-  handleStepCompleted,
+  state,
+  dispatch,
 }: Props) => {
-  const [state, setFormData] = useState({
-    email: "",
-    mobile: "",
-    password: "",
-    confirmPassword: "",
-  });
-
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    dispatch({
+      type: "INPUT_TEXT",
+      payload: {
+        name: name,
+        value: value,
+      },
+    });
   };
 
   return (
@@ -36,7 +36,7 @@ export const SellerFirstStepData = ({
         label="Enter Email"
         id="df"
         isBgLable={true}
-        value={state.email}
+        value={state.formData.email}
         onChange={handleOnChange}
         name="email"
       />
@@ -45,7 +45,7 @@ export const SellerFirstStepData = ({
         className="border rounded px-4"
         label="Enter Mobile Number"
         id="df"
-        value={state.mobile}
+        value={state.formData.mobile}
         name="mobile"
         onChange={handleOnChange}
       />
@@ -54,7 +54,7 @@ export const SellerFirstStepData = ({
         className="border rounded px-4"
         label="Create Password"
         id="df"
-        value={state.password}
+        value={state.formData.password}
         name="password"
         onChange={handleOnChange}
       />
@@ -64,7 +64,7 @@ export const SellerFirstStepData = ({
         label="Confirm Password"
         id="df"
         name="confirmPassword"
-        value={state.confirmPassword}
+        value={state.formData.confirmPassword}
         onChange={handleOnChange}
       />
 

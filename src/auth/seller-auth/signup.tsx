@@ -1,13 +1,59 @@
 import { CircleCheckBig } from "lucide-react";
 import { SellerFirstStepData } from "./first-step";
 import { SellerSecondStepData } from "./second-step";
-import { useState } from "react";
+import { useReducer, useState } from "react";
+import type { SignupFormType } from "../../types/seller/signup";
+
+export type Action =
+  | { type: "INPUT_TEXT"; payload: { name: string; value: string } }
+  | { type: "RESET_FORM" }
+  | { type: "ERROR" };
+
+function reducer(state: SignupFormType, action: Action) {
+  switch (action.type) {
+    case "INPUT_TEXT":
+      return {
+        ...state,
+        formData: {
+          ...state.formData,
+          [action.payload.name]: action.payload.value,
+        },
+      };
+
+    case "ERROR":
+      return {
+        ...state,
+      };
+    default:
+      return state;
+  }
+}
+
+const inititaState: SignupFormType = {
+  formData: {
+    email: "",
+    name: "",
+    mobile: "",
+    password: "",
+    confirmPassword: "",
+    businessName: "",
+    storeName: "",
+    businessType: "",
+    taxDetails: "",
+    storeAddress: "",
+    bankDetails: "",
+    address: "",
+  },
+  formError: {},
+};
 
 export const SellerSignup = () => {
   const [activeFormState, setActiveFormState] = useState<"first" | "second">(
     "first",
   );
-  const [stepCompleted, setStepCompleted] = useState<string[]>([]);
+  const [state, dispatch] = useReducer(reducer, inititaState);
+
+  console.log(state);
 
   return (
     <div className="w-[70%] m-auto">
@@ -25,9 +71,17 @@ export const SellerSignup = () => {
 
       <div>
         {activeFormState === "first" ? (
-          <SellerFirstStepData handleNextStep={setActiveFormState} />
+          <SellerFirstStepData
+            dispatch={dispatch}
+            handleNextStep={setActiveFormState}
+            state={state}
+          />
         ) : activeFormState === "second" ? (
-          <SellerSecondStepData handleNextStep={setActiveFormState} />
+          <SellerSecondStepData
+            dispatch={dispatch}
+            state={state}
+            handleNextStep={setActiveFormState}
+          />
         ) : null}
       </div>
     </div>
