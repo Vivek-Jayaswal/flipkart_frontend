@@ -27,6 +27,8 @@ export const SellerSecondStepData = ({
     });
   };
 
+  console.log("second");
+
   useEffect(() => {
     // const
   }, [state]);

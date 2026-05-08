@@ -1,13 +1,15 @@
-import { CircleCheckBig } from "lucide-react";
 import { SellerFirstStepData } from "./first-step";
-import { SellerSecondStepData } from "./second-step";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import type { SignupFormType } from "../../types/seller/signup";
+import { StepProgressBar } from "../../components/reusable/step-progressbar";
 
 export type Action =
-  | { type: "INPUT_TEXT"; payload: { name: string; value: string } }
+  | {
+      type: "INPUT_TEXT";
+      payload: { name: string; value: string | string | number | boolean };
+    }
   | { type: "RESET_FORM" }
-  | { type: "ERROR" };
+  | { type: "ERROR"; payload: Record<string, string> };
 
 function reducer(state: SignupFormType, action: Action) {
   switch (action.type) {
@@ -18,11 +20,19 @@ function reducer(state: SignupFormType, action: Action) {
           ...state.formData,
           [action.payload.name]: action.payload.value,
         },
+        formError: {
+          ...state.formError,
+          [action.payload.name]: "",
+        },
       };
 
     case "ERROR":
       return {
         ...state,
+        formError: {
+          ...state.formError,
+          ...action.payload,
+        },
       };
     default:
       return state;
@@ -32,57 +42,31 @@ function reducer(state: SignupFormType, action: Action) {
 const inititaState: SignupFormType = {
   formData: {
     email: "",
-    name: "",
     mobile: "",
     password: "",
     confirmPassword: "",
-    businessName: "",
-    storeName: "",
-    businessType: "",
-    taxDetails: "",
-    storeAddress: "",
-    bankDetails: "",
-    address: "",
+    isEmailVerified: false,
   },
   formError: {},
 };
 
 export const SellerSignup = () => {
-  const [activeFormState, setActiveFormState] = useState<"first" | "second">(
-    "first",
-  );
+  const [isFirstStepCompleted, setIsFirstStepCompleted] = useState<boolean>();
   const [state, dispatch] = useReducer(reducer, inititaState);
 
-  console.log(state);
+  useEffect(() => {
+    const savedData = sessionStorage.getItem("isFirstStepCompleted");
+
+    if (savedData) {
+      setIsFirstStepCompleted(savedData === "true");
+    }
+  }, [sessionStorage.getItem("isFirstStepCompleted")]);
 
   return (
     <div className="w-[70%] m-auto">
-      <div className="flex items-center gap-6 py-4">
-        <div className="flex items-center gap-3">
-          <CircleCheckBig size={24} />
-          <h1>EMAIL & PASSWORD</h1>
-        </div>
-        <div className="w-20 border-b-2"></div>
-        <div className="flex items-center gap-3">
-          <CircleCheckBig size={24} />
-          <h1>BUSINESS DETAILS</h1>
-        </div>
-      </div>
-
+      <StepProgressBar />
       <div>
-        {activeFormState === "first" ? (
-          <SellerFirstStepData
-            dispatch={dispatch}
-            handleNextStep={setActiveFormState}
-            state={state}
-          />
-        ) : activeFormState === "second" ? (
-          <SellerSecondStepData
-            dispatch={dispatch}
-            state={state}
-            handleNextStep={setActiveFormState}
-          />
-        ) : null}
+        <SellerFirstStepData dispatch={dispatch} state={state} />
       </div>
     </div>
   );

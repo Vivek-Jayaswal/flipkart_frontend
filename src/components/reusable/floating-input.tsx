@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "./button";
+import { cn } from "../../utils/cn";
 
 type FloatingInputProps = {
   label: string;
@@ -7,7 +8,8 @@ type FloatingInputProps = {
   error?: boolean;
   isBgLable?: boolean;
   LeftIcon?: React.ElementType;
-  RightIcon?: React.ElementType;
+  rightElement?: React.ReactNode;
+  rightElementClass?: string;
   togglePassword?: () => void;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
@@ -17,7 +19,8 @@ export const FloatingInput = ({
   value,
   className,
   LeftIcon,
-  RightIcon,
+  rightElementClass,
+  rightElement,
   togglePassword,
   isBgLable,
   ...props
@@ -38,21 +41,15 @@ export const FloatingInput = ({
           outline-none py-2 transition-all
           focus:border-blue-500
           ${className}
-          ${RightIcon ? "pr-10" : ""}
+          ${rightElement ? "pr-10" : ""}
         `}
         {...props}
       />
 
-      {RightIcon && (
-        <Button
-          size="icon"
-          variant="outline"
-          type="button"
-          onClick={togglePassword}
-          className="absolute right-2 top-4 hover:bg-transparent p-0 border-none"
-        >
-          <RightIcon size={18} />
-        </Button>
+      {rightElement && (
+        <div className={cn("absolute right-2 top-3.5", rightElementClass)}>
+          {rightElement}
+        </div>
       )}
 
       <label

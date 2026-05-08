@@ -4,8 +4,12 @@ import { NavItem } from "../nav-item";
 import { ChevronDown } from "lucide-react";
 import SellingPopover from "./selling-popover";
 import { LearnPopover } from "./learn-popover";
+import { useState } from "react";
+import { SellerLogin } from "../../../auth/seller-auth/login";
 
 const SellerNavbar = () => {
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+
   return (
     <nav className="w-full flex justify-between items-center py-4 border-b border-gray-100">
       <div className="flex items-center gap-2 space-x-8">
@@ -27,13 +31,20 @@ const SellerNavbar = () => {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <NavLink to={"/seller/login"}>login</NavLink>
+        <Button
+          variant="outline"
+          className="border-none"
+          onClick={() => setIsLogin(true)}
+        >
+          login
+        </Button>
         <NavLink to={"/seller/signup"}>
           <Button variant="outline" className="bg-amber-400 rounded-none">
             Start Selling
           </Button>
         </NavLink>
       </div>
+      {isLogin && <SellerLogin isLogin={isLogin} setIsLogin={setIsLogin} />}
     </nav>
   );
 };

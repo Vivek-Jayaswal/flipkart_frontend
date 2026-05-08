@@ -27,7 +27,7 @@ export function Signup() {
   };
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (d: string) => sendRegistrationRequest(d),
+    mutationFn: async (d: string) => d,
     onSuccess: () => {
       toast.success("OTP sent successfully to your email!");
       setStep("two");

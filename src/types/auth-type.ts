@@ -6,3 +6,10 @@ export type RegisterUserType = {
   password: string;
   gmail: string;
 };
+
+export type SellerPayload = {
+  gmail: string;
+  mobile: string;
+  password: string;
+  role: string;
+};

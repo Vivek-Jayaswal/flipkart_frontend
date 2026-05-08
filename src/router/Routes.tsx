@@ -6,7 +6,7 @@ import { HomePageRoutes } from "../pages/buyer/home-page/$routes";
 import CategoryNavbar from "../components/navbar/category-navbar";
 import SellerLayout from "../layout/seller-layout";
 import { SellerSignup } from "../auth/seller-auth/signup";
-import { SellerLogin } from "../auth/seller-auth/login";
+import { SellerDashboard } from "../pages/seller/dashboard/dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -29,8 +29,8 @@ export const router = createBrowserRouter([
     element: <SellerLayout />,
     children: [
       { path: "selling", element: <h1>seller</h1> },
-      { path: "login", element: <SellerLogin /> },
       { path: "signup", element: <SellerSignup /> },
+      { path: "dashboard", element: <SellerDashboard /> },
       { path: "learn", element: <h1>learn</h1> },
       { path: "shopeasy", element: <h1>shopeasy</h1> },
     ],
