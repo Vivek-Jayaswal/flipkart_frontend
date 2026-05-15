@@ -26,7 +26,8 @@ export const VerifyOtp = ({ handleNextStep, gmail }: ParentProps) => {
     mutationFn: async (d: OtpData) => await verifyOtpRequest(d),
     onSuccess: (res) => {
       console.log(res);
-      localStorage.setItem("accessToken", res.token);
+      localStorage.setItem("buyerAccessToken", res.token);
+      localStorage.setItem("currentRole", "buyer");
       toast.success("OTP verification successfully done");
       handleNextStep("three");
     },

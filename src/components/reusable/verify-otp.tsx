@@ -21,8 +21,9 @@ export const VerifyOtp = ({ gmail, role, fn }: ParentProps) => {
   const { mutate, isPending } = useMutation({
     mutationFn: async (d: OtpData) => await verifyOtpRequest(d),
     onSuccess: (res) => {
-      console.log(res);
-      localStorage.setItem("accessToken", res.token);
+      const storageKey =
+        role === "seller" ? "sellerAccessToken" : "buyerAccessToken";
+      localStorage.setItem(storageKey, res.token);
       toast.success("OTP verification successfully done");
       fn && fn();
     },

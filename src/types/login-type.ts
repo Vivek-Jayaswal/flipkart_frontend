@@ -20,8 +20,11 @@ export interface LoginResData {
 }
 
 export type InititalState = {
-  token: string | null;
-  user: AuthUserData | null;
+  accessToken: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  isVerified: boolean;
+  error: string | null;
 };
 
 export type AuthUserData = {

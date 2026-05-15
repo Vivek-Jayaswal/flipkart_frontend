@@ -7,11 +7,18 @@ import CategoryNavbar from "../components/navbar/category-navbar";
 import SellerLayout from "../layout/seller-layout";
 import { SellerSignup } from "../auth/seller-auth/signup";
 import { SellerDashboard } from "../pages/seller/dashboard/dashboard";
+import SellerDashboardLayout from "../layout/seller-dashboard-layout";
+import HomePage from "../pages/seller/dashboard/home/home";
+import { SellerProtectedRoute, PublicSellerRoute } from "./gaurd";
+import SellerOnboardingProtectedRoute from "./protected-gaurds/onboarding-protectd-route";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    loader: async () => {
+      return null;
+    },
     children: [
       { path: "/cart", element: <div>Element</div> },
       {
@@ -24,17 +31,56 @@ export const router = createBrowserRouter([
       { path: "signup", element: <Signup /> },
     ],
   },
+
   {
     path: "/seller",
-    element: <SellerLayout />,
+    element: (
+      <PublicSellerRoute>
+        <SellerLayout />
+      </PublicSellerRoute>
+    ),
     children: [
-      { path: "selling", element: <h1>seller</h1> },
-      { path: "signup", element: <SellerSignup /> },
-      { path: "dashboard", element: <SellerDashboard /> },
-      { path: "learn", element: <h1>learn</h1> },
-      { path: "shopeasy", element: <h1>shopeasy</h1> },
+      {
+        index: true,
+        element: <h1>seller</h1>,
+      },
+      {
+        path: "signup",
+        element: <SellerSignup />,
+      },
     ],
   },
+
+  {
+    path: "/seller/onboarding",
+    element: (
+      <SellerOnboardingProtectedRoute>
+        <SellerDashboard />,
+      </SellerOnboardingProtectedRoute>
+    ),
+  },
+
+  {
+    path: "/seller/dashboard",
+
+    element: (
+      <SellerProtectedRoute>
+        <SellerDashboardLayout />
+      </SellerProtectedRoute>
+    ),
+    children: [
+      { path: "home", element: <HomePage /> },
+      { path: "listing", element: <>Listing</> },
+      { path: "order", element: <>Order</> },
+      { path: "return", element: <>Return</> },
+      { path: "payments", element: <>Payments</> },
+      { path: "payouts", element: <>Payouts</> },
+      { path: "reports", element: <>Reports</> },
+      { path: "advertising", element: <>Advertising</> },
+      { path: "*", element: <>Not Found</> },
+    ],
+  },
+
   {
     path: "/admin",
     element: <SellerLayout />,

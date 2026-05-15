@@ -9,4 +9,7 @@ const stroe = configureStore({
   },
 });
 
+export type RootState = ReturnType<typeof stroe.getState>;
+export type AppDispatch = typeof stroe.dispatch;
+
 export default stroe;

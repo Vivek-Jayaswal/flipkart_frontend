@@ -40,16 +40,14 @@ export const SellerFirstStepData = ({ state, dispatch }: Props) => {
   const { mutate, isPending } = useMutation({
     mutationFn: async (d: { gmail: string; role: string }) =>
       await sendRegistrationRequest(d),
-    onSuccess(data) {
-      console.log(data);
+    onSuccess() {
       toast.success("Otp send successfully");
       setIsVerify(true);
     },
   });
   const { mutate: registerSeller, isPending: isRegistering } = useMutation({
     mutationFn: async (d: SellerPayload) => await SellerRegisterUserRequest(d),
-    onSuccess(data, variables, onMutateResult) {
-      console.log(data, variables, onMutateResult);
+    onSuccess(data) {
       toast.success("Otp send successfully");
       reduxDispatch(loginSellerUser(data));
       navigate("/seller/dashboard");
@@ -145,7 +143,6 @@ export const SellerFirstStepData = ({ state, dispatch }: Props) => {
 
   useEffect(() => {
     const savedData = sessionStorage.getItem("sellerSignup");
-
     if (savedData) {
       const parsed = JSON.parse(savedData);
       Object.keys(parsed).forEach((key) => {
@@ -211,14 +208,16 @@ export const SellerFirstStepData = ({ state, dispatch }: Props) => {
                 onClick={handleEmailVerification}
                 variant="outline"
                 disabled={state.formData.isEmailVerified}
-                className={`border-none p-0 hover:bg-none ${state.formData.isEmailVerified && "cursor-not-allowed hover:bg-transparent"}`}
+                className={`border-none p-0 hover:bg-transparent ${state.formData.isEmailVerified && "cursor-not-allowed hover:bg-transparent"}`}
               >
                 {state.formData.isEmailVerified ? (
                   <span className="text-green-800 flex items-center gap-1">
                     Verified <BadgeCheck color="green" size={18} />
                   </span>
                 ) : (
-                  <span>{isPending ? "Sending..." : "Send Otp"}</span>
+                  <span className="text-sm font-semibold text-blue-600">
+                    {isPending ? "Sending..." : "Send Otp"}
+                  </span>
                 )}
               </Button>
             }

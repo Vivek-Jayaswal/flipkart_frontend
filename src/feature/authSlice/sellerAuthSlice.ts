@@ -1,38 +1,90 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { verifySellerAuth } from "./authThunks";
 
-const storedSellerAuthData = localStorage.getItem("sellerData");
-const token = localStorage.getItem("token");
+const token = localStorage.getItem("sellerAccessToken");
 
-// const fromateUserData = (d: UserLoginResData["data"]) => {
-//   return {
-//     _id: d._id,
-//     name: d.name,
-//     mobile: String(d.mobile),
-//     gmail: d.email,
-//     role: d.roles ?? [],
-//     address: d.address,
-//   };
-// };
+type AuthState = {
+  accessToken: string | null;
+  isSellerProfileCompleted: boolean;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  isVerified: boolean;
+  error: string | null;
+};
 
-const initialState = {
-  sellerData: storedSellerAuthData ? JSON.parse(storedSellerAuthData) : null,
-  token: token ? token : null,
+const initialState: AuthState = {
+  accessToken: token ? token : null,
+  isAuthenticated: !!token,
+  isSellerProfileCompleted: false,
+  isLoading: false,
+  isVerified: false,
+  error: null,
 };
 
 const selleAuthSlice = createSlice({
   name: "sellerAuthSlice",
   initialState,
   reducers: {
-    loginSellerUser: (state, actions) => {
-      const { token, data } = actions.payload;
-      console.log(actions);
-      state.token = token;
-      state.sellerData = data;
-      localStorage.setItem("sellerData", JSON.stringify(data));
-      localStorage.setItem("accessToken", token);
+    loginSellerUser: (
+      state,
+      actions: PayloadAction<{
+        token: string;
+        isSellerProfileCompleted: boolean;
+      }>,
+    ) => {
+      const { token, isSellerProfileCompleted } = actions.payload;
+      state.accessToken = token;
+      state.isAuthenticated = true;
+      state.isSellerProfileCompleted = isSellerProfileCompleted;
+      state.isVerified = true;
+      localStorage.setItem("sellerAccessToken", token);
     },
+
+    completeProfile: (state) => {
+      state.isSellerProfileCompleted = true;
+    },
+
+    logout: (state) => {
+      state.accessToken = null;
+      state.isAuthenticated = false;
+      state.isSellerProfileCompleted = false;
+      state.isVerified = true;
+      state.isLoading = false;
+      localStorage.removeItem("sellerAccessToken");
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(verifySellerAuth.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(verifySellerAuth.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isVerified = true;
+
+        if (action.payload) {
+          state.accessToken = localStorage.getItem("sellerAccessToken");
+          state.isAuthenticated = true;
+          state.isSellerProfileCompleted =
+            action.payload.isSellerProfileCompleted;
+        } else {
+          // No payload = not authenticated
+          state.isAuthenticated = false;
+          state.accessToken = null;
+        }
+      })
+      .addCase(verifySellerAuth.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isVerified = true;
+        state.isAuthenticated = false;
+        state.accessToken = null;
+        state.error = (action.payload as any)?.message || "Verification failed";
+      });
   },
 });
 
-export const { loginSellerUser } = selleAuthSlice.actions;
+export const { loginSellerUser, logout, completeProfile } =
+  selleAuthSlice.actions;
 export default selleAuthSlice.reducer;

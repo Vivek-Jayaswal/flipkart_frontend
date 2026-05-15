@@ -7,12 +7,17 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken");
+    const sellerToken = localStorage.getItem("sellerAccessToken");
+    const buyerToken = localStorage.getItem("buyerAccessToken");
 
-    console.log(token);
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (window.location.pathname.startsWith("/seller")) {
+      if (sellerToken) {
+        config.headers.Authorization = `Bearer ${sellerToken}`;
+      }
+    } else {
+      if (buyerToken) {
+        config.headers.Authorization = `Bearer ${buyerToken}`;
+      }
     }
 
     return config;
@@ -45,23 +50,37 @@ api.interceptors.response.use(
         isRefreshing = true;
 
         try {
+          const currentRole = window.location.pathname.startsWith("/seller")
+            ? "seller"
+            : "buyer";
           const res = await axios.post(
-            `${import.meta.env.VITE_API_URL}/auth/refresh`,
-            {},
+            `${import.meta.env.VITE_API_URL}/auth/refresh-token`,
+            { role: currentRole },
             { withCredentials: true },
           );
 
           const newToken = res.data.accessToken;
 
-          localStorage.setItem("accessToken", newToken);
+          if (currentRole === "seller") {
+            localStorage.setItem("sellerAccessToken", newToken);
+          } else {
+            localStorage.setItem("buyerAccessToken", newToken);
+          }
 
           isRefreshing = false;
           onRefreshed(newToken);
         } catch (err) {
           isRefreshing = false;
 
-          // logout user
-          localStorage.removeItem("accessToken");
+          // logout active role
+          const currentRole = window.location.pathname.startsWith("/seller")
+            ? "seller"
+            : "buyer";
+          if (currentRole === "seller") {
+            localStorage.removeItem("sellerAccessToken");
+          } else {
+            localStorage.removeItem("buyerAccessToken");
+          }
           return Promise.reject(err);
         }
       }
