@@ -23,11 +23,11 @@ export function SellerProtectedRoute({
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/seller/signup" />;
+    return <Navigate to="/seller/signup" replace />;
   }
 
   if (!isSellerProfileCompleted) {
-    return <Navigate to="/seller/onboarding" />;
+    return <Navigate to="/seller/onboarding" replace />;
   }
 
   return children ? <>{children}</> : <Outlet />;
@@ -58,8 +58,8 @@ export function PublicSellerRoute({
   }
 
   if (!isSellerProfileCompleted) {
-    return <Navigate to="/seller/onboarding" />;
+    return <Navigate to="/seller/onboarding" replace />;
   }
 
-  return <Navigate to="/seller/dashboard/home" />;
+  return <Navigate to="/seller/dashboard" replace />;
 }

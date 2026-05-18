@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useReducer } from "react";
 import type {
   SellerDetailsPayloadType,
   SellerDetailsSubmissionType,
@@ -7,14 +7,13 @@ import { FloatingInput } from "../../../components/reusable/floating-input";
 import { Button } from "../../../components/reusable/button";
 import { StepProgressBar } from "../../../components/reusable/step-progressbar";
 import { Mail, Phone } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../../types/store/store";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import {
-  SellerRegisterUserRequest,
-  SellerRegistrationDetailsUpdateRequest,
-} from "../../../services/mutation/registration";
+import { SellerRegistrationDetailsUpdateRequest } from "../../../services/mutation/registration";
+import { useNavigate } from "react-router-dom";
+import { completeProfile } from "../../../feature/authSlice/sellerAuthSlice";
 
 export type Action =
   | {
@@ -72,14 +71,18 @@ const inititaState: SellerDetailsSubmissionType = {
 };
 
 export const SellerDashboard = () => {
-  const { sellerData } = useSelector((state: RootState) => state?.sellerAuth);
+  const { data } = useSelector((state: RootState) => state?.sellerAuth);
   const [form, dispatch] = useReducer(reducer, inititaState);
+  const navigate = useNavigate();
+  const regDispatch = useDispatch();
   const { mutate, isPending } = useMutation({
     mutationFn: async (d: SellerDetailsPayloadType) =>
       await SellerRegistrationDetailsUpdateRequest(d),
     onSuccess(data, variables, onMutateResult) {
       console.log(data, variables, onMutateResult);
       toast.success("Otp send successfully");
+      regDispatch(completeProfile());
+      navigate("/seller/dashboard");
     },
   });
 
@@ -130,7 +133,6 @@ export const SellerDashboard = () => {
 
   const handleSubmitDetails = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(form);
 
     if (!validateForm()) return;
     const d = form.formData;
@@ -181,19 +183,19 @@ export const SellerDashboard = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Phone size={18} />
-              <p>{sellerData?.mobile || "Missing"}</p>
+              <p>{data?.mobile || "Missing"}</p>
             </div>
             <div className="bg-green-100 rounded-xl text-green-600 px-3 py-1 text-sm font-medium">
-              {sellerData?.mobile ? "Verified" : "Pending"}
+              {data?.mobile ? "Verified" : "Pending"}
             </div>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Mail size={18} />
-              <p>{sellerData?.email || "NA"}</p>
+              <p>{data?.gmail || "NA"}</p>
             </div>
             <div className="bg-green-100 rounded-xl text-green-600 px-3 py-1 text-sm font-medium">
-              {sellerData?.email ? "Verified" : "Pending"}
+              {data?.gmail ? "Verified" : "Pending"}
             </div>
           </div>
         </div>
@@ -223,7 +225,7 @@ export const SellerDashboard = () => {
           <div>
             <FloatingInput
               className="border rounded px-4"
-              label="Enter Seller Name"
+              label="Enter Seller Address"
               id="sellerAddress"
               isBgLable={true}
               value={form.formData.sellerAddress}

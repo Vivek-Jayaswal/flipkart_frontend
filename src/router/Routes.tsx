@@ -55,7 +55,7 @@ export const router = createBrowserRouter([
     path: "/seller/onboarding",
     element: (
       <SellerOnboardingProtectedRoute>
-        <SellerDashboard />,
+        <SellerDashboard />
       </SellerOnboardingProtectedRoute>
     ),
   },
@@ -69,7 +69,7 @@ export const router = createBrowserRouter([
       </SellerProtectedRoute>
     ),
     children: [
-      { path: "home", element: <HomePage /> },
+      { index: true, element: <HomePage /> },
       { path: "listing", element: <>Listing</> },
       { path: "order", element: <>Order</> },
       { path: "return", element: <>Return</> },

@@ -3,6 +3,8 @@ import { router } from "./router/Routes";
 import { AuthInitializer } from "./router/AuthInitializer";
 
 function App() {
+  console.log("calling");
+  
   return (
     <AuthInitializer>
       <RouterProvider router={router} />

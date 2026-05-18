@@ -6,3 +6,6 @@ export const sendUserLogin = async (data: LoginPayload) => {
   const res = await api.post<UserLoginResData>("/auth/login", data);
   return res.data;
 };
+export const userLogout = async (data: { role: string }) => {
+  return await api.post<UserLoginResData>("/auth/logout", data);
+};

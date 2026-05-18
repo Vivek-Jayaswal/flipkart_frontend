@@ -91,6 +91,7 @@ export const SellerSignup = () => {
     mutationFn: async (d: SellerPayload) => await SellerRegisterUserRequest(d),
     onSuccess(data) {
       toast.success("Otp send successfully");
+      console.log(data);
       navigate("/seller/dashboard");
       sessionStorage.removeItem("sellerSignup");
       localStorage.removeItem("sellerAccessToken");
@@ -199,12 +200,6 @@ export const SellerSignup = () => {
       });
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (sellerData && token) {
-  //     navigate("/seller/dashboard");
-  //   }
-  // }, []);
 
   return (
     <div className="w-[70%] m-auto">

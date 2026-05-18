@@ -8,20 +8,28 @@ export default function SellerOnboardingProtectedRoute({
 }: {
   children: React.ReactNode;
 }) {
-  const { isLoading, isAuthenticated, isSellerProfileCompleted } = useSelector(
-    (state: RootState) => state.sellerAuth,
-  );
+  const { isLoading, isAuthenticated, isVerified, isSellerProfileCompleted } =
+    useSelector((state: RootState) => state.sellerAuth);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Verifying authentication...</p>
+        </div>
+      </div>
+    );
   }
 
-  // not logged in
   if (!isAuthenticated) {
     return <Navigate to="/seller/signup" />;
   }
 
-  // already completed onboarding
+  if (!isVerified) {
+    return <Navigate to="/seller/signup" />;
+  }
+
   if (isSellerProfileCompleted) {
     return <Navigate to="/seller/dashboard/home" />;
   }

@@ -2,7 +2,8 @@ export interface UserLoginResData {
   message: string;
   status: number;
   data: LoginResData;
-  token: string;
+  token?: string;
+  role?: string;
 }
 
 export interface LoginResData {
@@ -35,3 +36,5 @@ export type AuthUserData = {
   role: string[];
   address: string;
 };
+
+export type LoginPayload = { gmail: string; passward: string; role: string };
