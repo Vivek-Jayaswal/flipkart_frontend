@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction } from "@reduxjs/toolkit";
 import { verifySellerAuth } from "./authThunks";
-import type { UserLoginResData } from "../../types/login-type";
+import { UserLoginResData } from "../../types/login-type";
 
 const token = localStorage.getItem("sellerAccessToken");
 

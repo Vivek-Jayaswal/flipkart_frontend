@@ -4,6 +4,7 @@ import api from "../../lib/api";
 const roleToStorageKey: Record<string, string> = {
   buyer: "buyerAccessToken",
   seller: "sellerAccessToken",
+  admin: "adminAccessToken",
 };
 
 export const verifySellerAuth = createAsyncThunk(
@@ -43,3 +44,25 @@ export const verifyBuyerAuth = createAsyncThunk(
     }
   },
 );
+
+export const verifyAdminAuth = createAsyncThunk(
+  "auth/verifyAdmin",
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem(roleToStorageKey["admin"]);
+
+      if (!token) {
+        console.log("No admin token found");
+        return null;
+      }
+
+      const response = await api.get("/auth/verify-admin");
+      return response.data.data;
+    } catch (error: any) {
+      localStorage.removeItem(roleToStorageKey["admin"]);
+      return rejectWithValue(error.response?.data);
+    }
+  },
+);
+
+// createAsyncThunk()

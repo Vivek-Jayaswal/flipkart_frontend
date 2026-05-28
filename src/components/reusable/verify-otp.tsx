@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Button } from "./button";
 import { toast } from "react-toastify";
 import {
-  sendRegistrationRequest,
+  sendOtpRequest,
   verifyOtpRequest,
 } from "../../services/mutation/registration";
 import { useMutation } from "@tanstack/react-query";
@@ -22,7 +22,11 @@ export const VerifyOtp = ({ gmail, role, fn }: ParentProps) => {
     mutationFn: async (d: OtpData) => await verifyOtpRequest(d),
     onSuccess: (res) => {
       const storageKey =
-        role === "seller" ? "sellerAccessToken" : "buyerAccessToken";
+        role === "seller"
+          ? "sellerAccessToken"
+          : role === "buyer"
+            ? "buyerAccessToken"
+            : "adminAccessToken";
       localStorage.setItem(storageKey, res.token);
       toast.success("OTP verification successfully done");
       fn && fn();
@@ -30,7 +34,7 @@ export const VerifyOtp = ({ gmail, role, fn }: ParentProps) => {
   });
   const { mutate: OTPResend, isPending: resendOtpPending } = useMutation({
     mutationFn: async (d: { gmail: string; role: string }) =>
-      await sendRegistrationRequest(d),
+      await sendOtpRequest(d),
     onSuccess: () => {
       toast.success("OTP Resend successfully in you mail");
     },
