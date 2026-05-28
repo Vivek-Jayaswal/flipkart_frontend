@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   verifySellerAuth,
   verifyBuyerAuth,
+  verifyAdminAuth,
 } from "../feature/authSlice/authThunks";
 import type { AppDispatch, RootState } from "../feature/store";
 
@@ -18,6 +19,7 @@ export function AuthInitializer({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const sellerToken = localStorage.getItem("sellerAccessToken");
     const buyerToken = localStorage.getItem("buyerAccessToken");
+    const adminToken = localStorage.getItem("adminAccessToken");
 
     if (sellerToken) {
       dispatch(verifySellerAuth());
@@ -25,6 +27,11 @@ export function AuthInitializer({ children }: { children: React.ReactNode }) {
 
     if (buyerToken) {
       dispatch(verifyBuyerAuth());
+    }
+
+    if (adminToken) {
+      // Dispatch admin authentication verification thunk
+      dispatch(verifyAdminAuth());
     }
   }, [dispatch]);
 

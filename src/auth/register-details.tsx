@@ -11,9 +11,14 @@ import { toast } from "react-toastify";
 type ParentProps = {
   handleNextStep: (s: "one" | "two" | "three") => void;
   gmail: string;
+  role: "buyer" | "seller" | "admin";
 };
 
-export const RegisterDetails = ({ handleNextStep, gmail }: ParentProps) => {
+export const RegisterDetails = ({
+  handleNextStep,
+  gmail,
+  role,
+}: ParentProps) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<RegisterUserType>({
     role: "buyer",
@@ -68,8 +73,8 @@ export const RegisterDetails = ({ handleNextStep, gmail }: ParentProps) => {
   };
 
   useEffect(() => {
-    setFormData((prev) => ({ ...prev, gmail: gmail }));
-  }, [gmail]);
+    setFormData((prev) => ({ ...prev, gmail: gmail, role: role }));
+  }, [gmail, role]);
 
   return (
     <div className="w-full h-full">
@@ -133,7 +138,16 @@ export const RegisterDetails = ({ handleNextStep, gmail }: ParentProps) => {
               label="Password"
               name="password"
               type={togglePassword ? "text" : "password"}
-              RightIcon={togglePassword ? Eye : EyeOff}
+              rightElement={
+                <Button
+                  onClick={handleTogglePassword}
+                  variant="outline"
+                  type={"button"}
+                  className="border-none p-0 hover:bg-transparent"
+                >
+                  {togglePassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </Button>
+              }
               value={formData.password}
               togglePassword={handleTogglePassword}
               onChange={handleInputChange}

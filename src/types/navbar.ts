@@ -1,8 +1,5 @@
 import type { LucideProps } from "lucide-react";
-import type {
-  ForwardRefExoticComponent,
-  RefAttributes,
-} from "react";
+import type { ForwardRefExoticComponent, RefAttributes } from "react";
 
 export type NavbarRightSideType = {
   name: string;
@@ -17,4 +14,5 @@ export type NavbarRightSideType = {
 export type LoginType = {
   gmail: string;
   password: string;
+  role: "buyer" | "seller" | "admin";
 };

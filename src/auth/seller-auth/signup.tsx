@@ -8,7 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import {
   SellerRegisterUserRequest,
-  sendRegistrationRequest,
+  sendOtpRequest,
 } from "../../services/mutation/registration";
 import { Modal } from "../../components/reusable/modal-popup";
 import { VerifyOtp } from "../../components/reusable/verify-otp";
@@ -67,10 +67,6 @@ const inititaState: SignupFormType = {
 
 export const SellerSignup = () => {
   const [state, dispatch] = useReducer(reducer, inititaState);
-  // const { sellerData, token } = useSelector(
-  //   (state: RootState) => state?.sellerAuth,
-  // );
-
   const [isToggle, setIsToggle] = useState<{
     confirmPassword: boolean;
     password: boolean;
@@ -81,21 +77,21 @@ export const SellerSignup = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (d: { gmail: string; role: string }) =>
-      await sendRegistrationRequest(d),
+      await sendOtpRequest(d),
     onSuccess() {
       toast.success("Otp send successfully");
       setIsVerify(true);
     },
   });
+
   const { mutate: registerSeller, isPending: isRegistering } = useMutation({
     mutationFn: async (d: SellerPayload) => await SellerRegisterUserRequest(d),
     onSuccess(data) {
-      toast.success("Otp send successfully");
-      console.log(data);
-      navigate("/seller/dashboard");
+      toast.success("Registration successfully");
       sessionStorage.removeItem("sellerSignup");
       localStorage.removeItem("sellerAccessToken");
       reduxDispatch(loginSellerUser(data));
+      navigate("/seller/dashboard");
     },
   });
 
@@ -165,6 +161,10 @@ export const SellerSignup = () => {
 
   const handleNext = () => {
     if (!validateForm()) return;
+    if (!state.formData.isEmailVerified) {
+      toast.error("Please verify your email first");
+      return;
+    }
     const payload: SellerPayload = {
       gmail: state.formData.email,
       mobile: state.formData.mobile,

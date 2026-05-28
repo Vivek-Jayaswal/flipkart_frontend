@@ -2,38 +2,45 @@ import { useRef, useState } from "react";
 import { Button } from "../components/reusable/button";
 import { toast } from "react-toastify";
 import {
-  sendRegistrationRequest,
+  sendOtpRequest,
   verifyOtpRequest,
 } from "../services/mutation/registration";
 import { useMutation } from "@tanstack/react-query";
+import { OtpData } from "./signup";
 
 type ParentProps = {
   handleNextStep: (s: "one" | "two" | "three") => void;
   handleBacktoLogin?: () => void;
   step?: "one" | "two" | "three";
   gmail?: string;
+  role?: "buyer" | "seller" | "admin";
 };
 
-type OtpData = {
+type VerifyOtpData = {
   gmail: string;
   otp: string;
+  role: "buyer" | "seller" | "admin";
 };
 
-export const VerifyOtp = ({ handleNextStep, gmail }: ParentProps) => {
+export const VerifyOtp = ({ handleNextStep, gmail, role }: ParentProps) => {
   const inputs = useRef<Array<HTMLInputElement | null>>([]);
   const [otp, setOtp] = useState<string[]>([]);
   const { mutate, isPending } = useMutation({
-    mutationFn: async (d: OtpData) => await verifyOtpRequest(d),
+    mutationFn: async (d: VerifyOtpData) => await verifyOtpRequest(d),
     onSuccess: (res) => {
-      console.log(res);
-      localStorage.setItem("buyerAccessToken", res.token);
-      localStorage.setItem("currentRole", "buyer");
+      const storageKey =
+        role === "seller"
+          ? "sellerAccessToken"
+          : role === "admin"
+            ? "adminAccessToken"
+            : "buyerAccessToken";
+      localStorage.setItem(storageKey, res.token);
       toast.success("OTP verification successfully done");
       handleNextStep("three");
     },
   });
   const { mutate: OTPResend, isPending: resendOtpPending } = useMutation({
-    mutationFn: async (d: string) => await sendRegistrationRequest(d),
+    mutationFn: async (d: OtpData) => await sendOtpRequest(d),
     onSuccess: () => {
       toast.success("OTP Resend successfully in you mail");
     },
@@ -62,9 +69,10 @@ export const VerifyOtp = ({ handleNextStep, gmail }: ParentProps) => {
       return;
     }
 
-    const otpData: OtpData = {
+    const otpData: VerifyOtpData = {
       gmail: gmail!,
       otp: otpValue.join(""),
+      role: role!,
     };
 
     mutate(otpData);
@@ -84,9 +92,10 @@ export const VerifyOtp = ({ handleNextStep, gmail }: ParentProps) => {
       <div className="flex items-center flex-col text-gray-700 mb-6">
         <p>Please enter the OTP sent to</p>
         <div className="flex items-center gap-2">
-          <p className="font-semibold">9850556558</p>.{" "}
+          <p className="font-semibold">{gmail}</p>.{" "}
           <Button
             onClick={() => handleNextStep("one")}
+            type="button"
             className="text-blue-600 cursor-pointer p-0 border-none hover:bg-transparent"
             variant="outline"
           >
@@ -127,7 +136,7 @@ export const VerifyOtp = ({ handleNextStep, gmail }: ParentProps) => {
           disabled={resendOtpPending}
           className={`${resendOtpPending ? "opacity-50 cursor-not-allowed" : ""} text-blue-600 cursor-pointer p-0 border-none hover:bg-transparent`}
           variant="outline"
-          onClick={() => OTPResend(gmail!)}
+          onClick={() => OTPResend({ gmail: gmail!, role: role! })}
         >
           {resendOtpPending ? "Resending..." : "Resend code"}
         </Button>

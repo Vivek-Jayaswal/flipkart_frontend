@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../components/reusable/button";
 import { Link, useNavigate } from "react-router-dom";
 import type { LoginType } from "../types/navbar";
@@ -13,10 +13,11 @@ import { useDispatch } from "react-redux";
 
 export type LoginPayload = { gmail: string; passward: string };
 
-export function Login() {
+export function Login({ role }: { role: "buyer" | "seller" | "admin" }) {
   const [formData, setFormData] = useState<LoginType>({
     gmail: "",
     password: "",
+    role: "buyer",
   });
   const [passwordType, setPasswordType] = useState<"password" | "text">(
     "password",
@@ -42,7 +43,10 @@ export function Login() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    setIsValidEmail(validateEmail(e.target.value));
+
+    if (e.target.name === "gmail") {
+      setIsValidEmail(validateEmail(e.target.value));
+    }
     setError((prev) => ({ ...prev, [e.target.name]: "" }));
   };
 
@@ -73,6 +77,12 @@ export function Login() {
     };
     mutate(data);
   };
+
+  useEffect(() => {
+    if (role) {
+      setFormData((prev) => ({ ...prev, role: role }));
+    }
+  }, [role]);
 
   return (
     <div className="h-[70%] w-full">
@@ -125,8 +135,20 @@ export function Login() {
                 value={formData.password}
                 onChange={handleInputChange}
                 className="peer w-full border-b outline-none"
-                RightIcon={passwordType === "password" ? EyeOff : Eye}
-                togglePassword={handleTogglePassword}
+                rightElement={
+                  <Button
+                    onClick={handleTogglePassword}
+                    variant="outline"
+                    className="border-none p-0 hover:bg-transparent"
+                    type="button"
+                  >
+                    {passwordType === "password" ? (
+                      <EyeOff size={18} />
+                    ) : (
+                      <Eye size={18} />
+                    )}
+                  </Button>
+                }
                 type={passwordType}
               />
               {error.password && (

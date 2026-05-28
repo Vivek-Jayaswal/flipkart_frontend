@@ -1,24 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../components/reusable/input";
 import { Button } from "../components/reusable/button";
 import { useNavigate } from "react-router-dom";
 import { VerifyOtp } from "./verify-otp";
 import { RegisterDetails } from "./register-details";
 import { validateEmail } from "../utils/email-validator";
-import { sendRegistrationRequest } from "../services/mutation/registration";
+import { sendOtpRequest } from "../services/mutation/registration";
 import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
 
-export function Signup() {
-  const [input, setInput] = useState<string>("");
+type props = {
+  role: "buyer" | "seller" | "admin";
+};
+
+export type OtpData = {
+  gmail: string;
+  role: "buyer" | "seller" | "admin";
+};
+
+export function Signup({ role }: props) {
+  const [otpData, setOtpData] = useState<OtpData>({
+    gmail: "",
+    role: "buyer",
+  });
   const [isValidEmail, setIsValidEmail] = useState<boolean>(true);
   const [step, setStep] = useState<"one" | "two" | "three">("one");
   const navigate = useNavigate();
   const [error, setError] = useState<string>("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
-    setIsValidEmail(validateEmail(e.target.value));
+    setOtpData((prev) => ({ ...prev, gmail: e.target.value }));
+    if (e.target.name === "gmail") {
+      setIsValidEmail(validateEmail(e.target.value));
+    }
     setError("");
   };
 
@@ -27,7 +41,8 @@ export function Signup() {
   };
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (d: string) => d,
+    mutationFn: async (d: OtpData) =>
+      sendOtpRequest({ gmail: d.gmail, role: d.role }),
     onSuccess: () => {
       toast.success("OTP sent successfully to your email!");
       setStep("two");
@@ -36,8 +51,13 @@ export function Signup() {
 
   const handleSendOtp = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!input) {
+    if (otpData.gmail.trim() === "") {
       setError("Email is required");
+      return;
+    }
+
+    if (!otpData.role) {
+      setError("User role is missing. Please refresh the page and try again.");
       return;
     }
 
@@ -46,12 +66,19 @@ export function Signup() {
       return;
     }
 
-    mutate(input);
+    mutate(otpData);
   };
 
   const handleBacktoLogin = () => {
     navigate("/login");
   };
+
+  useEffect(() => {
+    if (role) {
+      setOtpData((prev) => ({ ...prev, role }));
+    }
+  }, [role]);
+
   return (
     <div className="h-[70%] w-full">
       <div className="w-[80%] m-auto h-full grid grid-cols-[1.3fr_2fr] shadow-[0px_0px_5px_#e5e7eb] mt-4">
@@ -82,13 +109,13 @@ export function Signup() {
             <div className="relative w-full">
               <Input
                 id="login-input"
-                value={input}
+                value={otpData.gmail}
                 onChange={handleInputChange}
                 className="peer w-full border-b border-gray-400 outline-none"
               />
               <label
                 htmlFor="login-input"
-                className={`${input ? "-top-4" : "top-2"} absolute peer-focus:-top-4 text-gray-400 left-0 transition-all`}
+                className={`${otpData.gmail ? "-top-4" : "top-2"} absolute peer-focus:-top-4 text-gray-400 left-0 transition-all`}
               >
                 Enter Email
               </label>
@@ -116,6 +143,7 @@ export function Signup() {
                 onClick={handleBacktoLogin}
                 className="px-4 py-2 w-full bg-white text-blue-500 hover:bg-transparent shadow-[0px_0px_10px_#e5e7eb] border-none mt-4 font-bold rounded-none"
                 variant="outline"
+                type="button"
               >
                 Back to Login
               </Button>
@@ -128,14 +156,19 @@ export function Signup() {
             <VerifyOtp
               handleNextStep={handleNextStep}
               step={step}
-              gmail={input}
+              gmail={otpData.gmail}
+              role={otpData.role}
             />
           </div>
         )}
 
         {step === "three" && (
           <div className="p-6 px-10 w-full flex flex-col text-gr justify-between items-start">
-            <RegisterDetails handleNextStep={handleNextStep} gmail={input} />
+            <RegisterDetails
+              handleNextStep={handleNextStep}
+              gmail={otpData.gmail}
+              role={otpData.role}
+            />
           </div>
         )}
       </div>

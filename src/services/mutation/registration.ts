@@ -2,7 +2,7 @@ import api from "../../lib/api";
 import type { RegisterUserType, SellerPayload } from "../../types/auth-type";
 import type { SellerDetailsPayloadType } from "../../types/seller/signup";
 
-export const sendRegistrationRequest = async (data: {
+export const sendOtpRequest = async (data: {
   gmail: string;
   role: string;
 }) => {
