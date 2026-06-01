@@ -1,49 +1,56 @@
 // ProductAddPage.tsx
-import {
-  ChevronDown,
-  Plus,
-  Trash2,
-  GripVertical,
-  ImagePlus,
-} from "lucide-react";
+import { Plus, ImagePlus, X } from "lucide-react";
 import { ProgressBar } from "./progressBar";
-import { FloatingInput } from "../../../../components/reusable/floating-input";
+import { FloatingInput } from "../../../../shared/reusable/floating-input";
+import SelectCategory from "./select-category";
+import { Label } from "../../../../shared/reusable/label";
 import {
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-  Select,
-} from "../../../../components/reusable/select";
+  ImagesType,
+  MultipleImageSelector,
+} from "../../../../shared/reusable/multi-image-selector";
+import { ChangeEvent, useState } from "react";
+import { Button } from "../../../../shared/reusable/button";
 
-const variants = [
-  {
-    color: "Black",
-    storage: "256GB",
-    sku: "IPH15PM-BLK-256",
-    price: "1,59,900",
-    discount: "1,49,900",
-    stock: "25",
-  },
-  {
-    color: "Black",
-    storage: "512GB",
-    sku: "IPH15PM-BLK-512",
-    price: "1,79,900",
-    discount: "1,69,900",
-    stock: "18",
-  },
-  {
-    color: "Blue Titanium",
-    storage: "256GB",
-    sku: "IPH15PM-BLU-256",
-    price: "1,59,900",
-    discount: "1,49,900",
-    stock: "20",
-  },
-];
+type ProductData = {
+  name: string;
+  categoryId: string;
+  shortDescription: string;
+  description: string;
+  thumbnail: ImagesType[];
+  gallery: ImagesType[];
+};
 
 export default function ProductAddPage() {
+  const [productData, setProductData] = useState<ProductData>({
+    name: "",
+    categoryId: "",
+    shortDescription: "",
+    description: "",
+    thumbnail: [],
+    gallery: [],
+  });
+
+  const handleDeleteMultipleImage = (id: string) => {
+    const filterdImages = productData.gallery.filter((d) => d.id != id);
+    setProductData((prev) => ({
+      ...prev,
+      gallery: filterdImages,
+    }));
+  };
+
+  const handleInputChanges = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setProductData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const validateFormData = () => {
+    const requiredFields = ["name", "description", "shortDescription"];
+  };
+
   return (
     <div className="min-h-screen bg-[#f6f7fb] flex">
       {/* SIDEBAR */}
@@ -54,11 +61,8 @@ export default function ProductAddPage() {
         <div className="p-8">
           {/* Title */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">
-              Add New Product
-            </h1>
-
-            <p className="text-gray-500 mt-1">
+            <h1 className="text-xl font-bold text-gray-900">Add New Product</h1>
+            <p className="text-gray-500 mt-1 text-sm">
               Fill all the required details to add a new product
             </p>
           </div>
@@ -70,7 +74,7 @@ export default function ProductAddPage() {
             {/* LEFT */}
             <div className="col-span-9 space-y-6">
               {/* BASIC INFO */}
-              <div className="bg-white border rounded-2xl p-6">
+              <div className="bg-white border border-gray-300 rounded p-6">
                 <h2 className="text-xl font-semibold mb-6">
                   Basic Information
                 </h2>
@@ -82,29 +86,61 @@ export default function ProductAddPage() {
                       <FloatingInput
                         label="Product Name"
                         id="product-name"
-                        value=""
+                        value={productData.name}
                         className="border border-gray-400 px-4 focus:ring-0 focus:border-gray-400 rounded-md"
                         isBgLable={true}
+                        onChange={handleInputChanges}
                       />
                     </div>
 
-                    <div className="w-[250px]">
-                      {/* <Select
-                        defaultValue="Apple"
-                        onValueChange={(value) => console.log(value)}
+                    <SelectCategory
+                      onSelectCategory={(id) =>
+                        console.log("Selected category ID:", id)
+                      }
+                    />
+
+                    <div>
+                      <Label
+                        htmlFor="short-description"
+                        className="text-sm font-medium mb-2 block"
                       >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Brand" />
-                        </SelectTrigger>
+                        Short Description
+                      </Label>
+                      <textarea
+                        maxLength={200}
+                        id="short-description"
+                        name="shortDescription"
+                        value={productData.shortDescription}
+                        placeholder="Write a short description of your product"
+                        rows={3}
+                        onChange={handleInputChanges}
+                        className="border border-gray-300 px-4 py-2 focus:outline-none text-sm w-full focus:ring-0 focus:border-gray-400 rounded-md"
+                      />
+                      <Label className="text-xs text-gray-400 mt-1 block">
+                        {productData.shortDescription.length || 0} / 200
+                        characters
+                      </Label>
+                    </div>
 
-                        <SelectContent>
-                          <SelectItem value="Apple">Apple</SelectItem>
-
-                          <SelectItem value="Samsung">Samsung</SelectItem>
-
-                          <SelectItem value="OnePlus">OnePlus</SelectItem>
-                        </SelectContent>
-                      </Select> */}
+                    <div>
+                      <Label
+                        htmlFor="description"
+                        className="text-sm font-medium mb-2 block"
+                      >
+                        Description
+                      </Label>
+                      <textarea
+                        id="description"
+                        name="description"
+                        value={productData.description}
+                        placeholder="Write a detailed description of your product"
+                        rows={5}
+                        onChange={handleInputChanges}
+                        className="border border-gray-300 focus:outline-none  px-4 py-2 text-sm w-full focus:ring-0 focus:border-gray-400 rounded-md"
+                      />
+                      <Label className="text-xs text-gray-400 mt-1 block">
+                        {productData.description.length || 0} / 1000 characters
+                      </Label>
                     </div>
                   </div>
 
@@ -114,9 +150,47 @@ export default function ProductAddPage() {
                       Product Thumbnail
                     </label>
 
-                    <div className="border-2 border-dashed rounded-2xl h-[240px] flex flex-col items-center justify-center text-center bg-gray-50">
-                      <div className="w-28 h-28 bg-white rounded-xl border flex items-center justify-center shadow-sm">
-                        <ImagePlus className="text-gray-400" size={34} />
+                    <div className="border-2 border-dashed border-gray-300 rounded h-[240px] flex flex-col items-center justify-center text-center bg-gray-50">
+                      <div
+                        className={`${productData.thumbnail.length > 0 ? "w-36 h-36" : "w-28 h-28"} bg-white rounded-xl border border-gray-300 flex items-center justify-center shadow-sm`}
+                      >
+                        {productData.thumbnail.length > 0 ? (
+                          <div className="relative">
+                            <img
+                              src={productData.thumbnail[0].URL}
+                              alt="Thumbnail"
+                              className="w-full h-full object-cover"
+                            />
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              className="p-0 border-0 absolute -top-8 -right-2 flex items-center justify-center rounded-xl"
+                            >
+                              <X
+                                className="w-5 h-5 bg-white rounded-full border p-[1px] flex items-center justify-center"
+                                onClick={() =>
+                                  setProductData((prev) => ({
+                                    ...prev,
+                                    thumbnail: [],
+                                  }))
+                                }
+                              />
+                            </Button>
+                          </div>
+                        ) : (
+                          <MultipleImageSelector
+                            id="p-single"
+                            selectImageType="single"
+                            onChange={(images) =>
+                              setProductData((prev) => ({
+                                ...prev,
+                                thumbnail: images,
+                              }))
+                            }
+                          >
+                            <ImagePlus className="text-gray-400" size={34} />
+                          </MultipleImageSelector>
+                        )}
                       </div>
 
                       <p className="text-sm text-gray-500 mt-4">
@@ -134,101 +208,54 @@ export default function ProductAddPage() {
                         Product Gallery
                       </label>
 
-                      <div className="flex gap-3">
-                        {[1, 2, 3, 4].map((item) => (
-                          <div
-                            key={item}
-                            className="w-20 h-20 rounded-xl border bg-gray-100 flex items-center justify-center relative"
+                      <div className="flex flex-wrap gap-3">
+                        {productData.gallery.length > 0 &&
+                          productData.gallery.map((d) => (
+                            <div
+                              key={d.id}
+                              className="relative w-20 h-20 border border-gray-300 rounded"
+                            >
+                              <img
+                                src={d.URL}
+                                alt="Thumbnail"
+                                className="w-full h-full object-cover rounded"
+                              />
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                onClick={() => handleDeleteMultipleImage(d.id)}
+                                className="p-0 border-0 absolute -top-2 -right-2 flex items-center justify-center rounded-xl"
+                              >
+                                <X
+                                  className="w-5 h-5 bg-white rounded-full border p-[1px] flex items-center justify-center"
+                                  onClick={() =>
+                                    setProductData((prev) => ({
+                                      ...prev,
+                                      thumbnail: [],
+                                    }))
+                                  }
+                                />
+                              </Button>
+                            </div>
+                          ))}
+
+                        <button className="w-20 h-20 rounded-xl border-2 border-dashed border-gray-300 flex items-center justify-center">
+                          <MultipleImageSelector
+                            id="p-multiple"
+                            selectImageType="multiple"
+                            onChange={(images) =>
+                              setProductData((prev) => ({
+                                ...prev,
+                                gallery: [...prev.gallery, ...images],
+                              }))
+                            }
                           >
-                            <ImagePlus size={20} className="text-gray-400" />
-
-                            <button className="absolute -top-2 -right-2 w-5 h-5 bg-white rounded-full border flex items-center justify-center">
-                              ×
-                            </button>
-                          </div>
-                        ))}
-
-                        <button className="w-20 h-20 rounded-xl border-2 border-dashed flex items-center justify-center">
-                          <Plus className="text-gray-400" />
+                            <Plus className="text-gray-400" size={34} />
+                          </MultipleImageSelector>
                         </button>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              {/* VARIANTS */}
-              <div className="bg-white border rounded-2xl p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <h2 className="text-xl font-semibold">Variants</h2>
-
-                    <p className="text-sm text-gray-500">
-                      Add different variants of this product
-                    </p>
-                  </div>
-
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl text-sm font-medium flex items-center gap-2">
-                    <Plus size={18} />
-                    Add Variant
-                  </button>
-                </div>
-
-                <div className="overflow-hidden border rounded-2xl">
-                  <table className="w-full">
-                    <thead className="bg-gray-50 text-sm text-gray-600">
-                      <tr>
-                        <th className="p-4 text-left"></th>
-                        <th className="p-4 text-left">Color</th>
-                        <th className="p-4 text-left">Storage</th>
-                        <th className="p-4 text-left">SKU</th>
-                        <th className="p-4 text-left">Price</th>
-                        <th className="p-4 text-left">Discounted</th>
-                        <th className="p-4 text-left">Stock</th>
-                        <th className="p-4 text-left">Action</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {/* {variants.map((variant, index) => (
-                        <tr key={index} className="border-t">
-                          <td className="p-4">
-                            <GripVertical size={16} className="text-gray-400" />
-                          </td>
-
-                          <td className="p-4">
-                            <Select value={variant.color} />
-                          </td>
-
-                          <td className="p-4">
-                            <Select value={variant.storage} />
-                          </td>
-
-                          <td className="p-4">
-                            <Input value={variant.sku} />
-                          </td>
-
-                          <td className="p-4">
-                            <Input value={variant.price} />
-                          </td>
-
-                          <td className="p-4">
-                            <Input value={variant.discount} />
-                          </td>
-
-                          <td className="p-4">
-                            <Input value={variant.stock} />
-                          </td>
-
-                          <td className="p-4">
-                            <button className="text-red-500">
-                              <Trash2 size={18} />
-                            </button>
-                          </td>
-                        </tr>
-                      ))} */}
-                    </tbody>
-                  </table>
                 </div>
               </div>
             </div>
@@ -236,18 +263,21 @@ export default function ProductAddPage() {
             {/* RIGHT SIDEBAR */}
             <div className="col-span-3 space-y-6">
               {/* STATUS */}
-              <div className="bg-white border rounded-2xl p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-lg">Product Status</h3>
 
-                  <span className="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-md font-medium">
-                    DRAFT
-                  </span>
+              <div className="bg-white border p-6 border-gray-300 rounded">
+                <div className="pb-3 border-b border-gray-300">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold">Product Status</h3>
+
+                    <span className="bg-yellow-100 text-yellow-700 text-[10px] px-2 py-1 rounded-md font-medium">
+                      DRAFT
+                    </span>
+                  </div>
+
+                  <p className="text-sm text-gray-500">
+                    Your product is in draft mode.
+                  </p>
                 </div>
-
-                <p className="text-sm text-gray-500">
-                  Your product is in draft mode.
-                </p>
 
                 <div className="mt-6">
                   <div className="flex justify-between text-sm mb-2">
@@ -261,8 +291,7 @@ export default function ProductAddPage() {
                 </div>
               </div>
 
-              {/* TIPS */}
-              <div className="bg-white border rounded-2xl p-6">
+              <div className="bg-white border p-6 border-gray-300 rounded">
                 <h3 className="font-semibold text-lg mb-5">Tips</h3>
 
                 <div className="space-y-4 text-sm text-gray-600">
@@ -279,44 +308,14 @@ export default function ProductAddPage() {
 
               {/* ACTIONS */}
               <div className="flex gap-3">
-                <button className="flex-1 border rounded-xl py-3 font-medium hover:bg-gray-50">
-                  Save as Draft
-                </button>
+                <Button className="">Save as Draft</Button>
 
-                <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 font-medium">
-                  Save & Next
-                </button>
+                <Button className="">Save & Next</Button>
               </div>
             </div>
           </div>
         </div>
       </main>
     </div>
-  );
-}
-
-/* ---------------- COMPONENTS ---------------- */
-
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <label className="text-sm font-medium block mb-2">{label}</label>
-      {children}
-    </div>
-  );
-}
-
-function Input({ value }: { value: string }) {
-  return (
-    <input
-      defaultValue={value}
-      className="w-full border rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-    />
   );
 }

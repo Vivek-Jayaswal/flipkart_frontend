@@ -7,7 +7,7 @@ import {
   Tag,
 } from "lucide-react";
 import { NavItem } from "../nav-item";
-import { Button } from "../../reusable/button";
+import { Button } from "../../../shared/reusable/button";
 import { useReducer } from "react";
 import { useLocation } from "react-router-dom";
 

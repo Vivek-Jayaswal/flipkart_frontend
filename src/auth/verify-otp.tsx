@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Button } from "../components/reusable/button";
+import { Button } from "../shared/reusable/button";
 import { toast } from "react-toastify";
 import {
   sendOtpRequest,

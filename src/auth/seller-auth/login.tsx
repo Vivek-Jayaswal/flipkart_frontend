@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button } from "../../components/reusable/button";
-import { FloatingInput } from "../../components/reusable/floating-input";
-import { Modal } from "../../components/reusable/modal-popup";
+import { Button } from "../../shared/reusable/button";
+import { FloatingInput } from "../../shared/reusable/floating-input";
+import { Modal } from "../../shared/reusable/modal-popup";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { LoginPayload } from "../../types/login-type";

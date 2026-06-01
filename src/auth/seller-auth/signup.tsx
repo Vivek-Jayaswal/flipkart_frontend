@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useState } from "react";
-import { StepProgressBar } from "../../components/reusable/step-progressbar";
-import { FloatingInput } from "../../components/reusable/floating-input";
-import { Button } from "../../components/reusable/button";
+import { StepProgressBar } from "../../shared/reusable/step-progressbar";
+import { FloatingInput } from "../../shared/reusable/floating-input";
+import { Button } from "../../shared/reusable/button";
 import type { SignupFormType } from "../../types/seller/signup";
 import { BadgeCheck, Eye, EyeOff } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
@@ -10,8 +10,8 @@ import {
   SellerRegisterUserRequest,
   sendOtpRequest,
 } from "../../services/mutation/registration";
-import { Modal } from "../../components/reusable/modal-popup";
-import { VerifyOtp } from "../../components/reusable/verify-otp";
+import { Modal } from "../../shared/reusable/modal-popup";
+import { VerifyOtp } from "../../shared/reusable/verify-otp";
 import type { SellerPayload } from "../../types/auth-type";
 import { useDispatch } from "react-redux";
 import { loginSellerUser } from "../../feature/authSlice/sellerAuthSlice";
