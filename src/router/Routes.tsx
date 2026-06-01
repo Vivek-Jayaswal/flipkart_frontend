@@ -16,6 +16,7 @@ import { BuyerSignup } from "../auth/buyer/buyer-signup";
 import { AdminLayout } from "../layout/admin-layout";
 import { AdminPublicProtectedRoute } from "./protected-gaurds/admin-protectd-route";
 import ProductAddPage from "../pages/seller/dashboard/product/createProduct";
+import { ProductListPage } from "../pages/seller/dashboard/product/product-list";
 
 export const router = createBrowserRouter([
   {
@@ -79,7 +80,7 @@ export const router = createBrowserRouter([
         path: "listing",
         children: [
           { path: "create-product", element: <ProductAddPage /> },
-          { path: "product-list", element: <ProductAddPage /> },
+          { path: "product-list", element: <ProductListPage /> },
         ],
       },
       { path: "order", element: <>Order</> },

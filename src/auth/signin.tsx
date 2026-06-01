@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "../components/reusable/button";
+import { Button } from "../shared/reusable/button";
 import { Link, useNavigate } from "react-router-dom";
 import type { LoginType } from "../types/navbar";
-import { FloatingInput } from "../components/reusable/floating-input";
+import { FloatingInput } from "../shared/reusable/floating-input";
 import { Eye, EyeOff } from "lucide-react";
 import { validateEmail } from "../utils/email-validator";
 import { useMutation } from "@tanstack/react-query";

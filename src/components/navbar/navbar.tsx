@@ -1,4 +1,4 @@
-import { Input } from "../reusable/input";
+import { Input } from "../../shared/reusable/input";
 import {
   CircleUserRound,
   Search,

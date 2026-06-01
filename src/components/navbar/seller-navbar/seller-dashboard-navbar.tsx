@@ -1,6 +1,6 @@
 import { User } from "lucide-react";
 import { useState } from "react";
-import { Button } from "../../reusable/button";
+import { Button } from "../../../shared/reusable/button";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../../feature/store";
 import { useMutation } from "@tanstack/react-query";

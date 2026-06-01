@@ -1,6 +1,6 @@
 import React, { useEffect, useState, type SetStateAction } from "react";
-import { FloatingInput } from "../../components/reusable/floating-input";
-import { Button } from "../../components/reusable/button";
+import { FloatingInput } from "../../shared/reusable/floating-input";
+import { Button } from "../../shared/reusable/button";
 import type { Action } from "./signup";
 import type { SignupFormType } from "../../types/seller/signup";
 import { BadgeCheck, Eye, EyeOff } from "lucide-react";
@@ -10,8 +10,8 @@ import {
   SellerRegisterUserRequest,
   sendRegistrationRequest,
 } from "../../services/mutation/registration";
-import { Modal } from "../../components/reusable/modal-popup";
-import { VerifyOtp } from "../../components/reusable/verify-otp";
+import { Modal } from "../../shared/reusable/modal-popup";
+import { VerifyOtp } from "../../shared/reusable/verify-otp";
 import type { SellerPayload } from "../../types/auth-type";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSellerUser } from "../../feature/authSlice/sellerAuthSlice";

@@ -3,9 +3,9 @@ import type {
   SellerDetailsPayloadType,
   SellerDetailsSubmissionType,
 } from "../../../types/seller/signup";
-import { FloatingInput } from "../../../components/reusable/floating-input";
-import { Button } from "../../../components/reusable/button";
-import { StepProgressBar } from "../../../components/reusable/step-progressbar";
+import { FloatingInput } from "../../../shared/reusable/floating-input";
+import { Button } from "../../../shared/reusable/button";
+import { StepProgressBar } from "../../../shared/reusable/step-progressbar";
 import { Mail, Phone } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../../types/store/store";

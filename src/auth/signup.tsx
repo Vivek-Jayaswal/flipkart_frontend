@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Input } from "../components/reusable/input";
-import { Button } from "../components/reusable/button";
+import { Input } from "../shared/reusable/input";
+import { Button } from "../shared/reusable/button";
 import { useNavigate } from "react-router-dom";
 import { VerifyOtp } from "./verify-otp";
 import { RegisterDetails } from "./register-details";
