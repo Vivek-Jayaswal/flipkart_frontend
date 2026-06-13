@@ -1,4 +1,3 @@
-// # Flipkart Clone – Fully Working Product Creation Schema
 
 // This schema is designed for a production-level Flipkart/Amazon-style eCommerce platform.
 // It supports:
