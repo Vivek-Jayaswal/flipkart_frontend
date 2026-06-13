@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type SetStateAction } from "react";
+import React, { useEffect, useState } from "react";
 import { FloatingInput } from "../../shared/reusable/floating-input";
 import { Button } from "../../shared/reusable/button";
 import type { Action } from "./signup";
@@ -6,18 +6,14 @@ import type { SignupFormType } from "../../types/seller/signup";
 import { BadgeCheck, Eye, EyeOff } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import {
-  SellerRegisterUserRequest,
-  sendRegistrationRequest,
-} from "../../services/mutation/registration";
+import { SellerRegisterUserRequest } from "../../services/mutation/registration";
 import { Modal } from "../../shared/reusable/modal-popup";
 import { VerifyOtp } from "../../shared/reusable/verify-otp";
 import type { SellerPayload } from "../../types/auth-type";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginSellerUser } from "../../feature/authSlice/sellerAuthSlice";
 import { useNavigate } from "react-router-dom";
 import { isValidIndianPhone, validateEmail } from "../../utils/email-validator";
-import type { RootState } from "../../types/store/store";
 
 type Props = {
   dispatch: React.Dispatch<Action>;
@@ -25,9 +21,7 @@ type Props = {
 };
 
 export const SellerFirstStepData = ({ state, dispatch }: Props) => {
-  const { sellerData, token } = useSelector(
-    (state: RootState) => state?.sellerAuth,
-  );
+  // const { sellerAuth } = useSelector((state: RootState) => state);
 
   const [isToggle, setIsToggle] = useState<{
     confirmPassword: boolean;
@@ -37,14 +31,14 @@ export const SellerFirstStepData = ({ state, dispatch }: Props) => {
   const reduxDispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: async (d: { gmail: string; role: string }) =>
-      await sendRegistrationRequest(d),
-    onSuccess() {
-      toast.success("Otp send successfully");
-      setIsVerify(true);
-    },
-  });
+  // const { mutate, isPending } = useMutation({
+  //   mutationFn: async (d: { gmail: string; role: string }) =>
+  //     await sendRegistrationRequest(d),
+  //   onSuccess() {
+  //     toast.success("Otp send successfully");
+  //     setIsVerify(true);
+  //   },
+  // });
   const { mutate: registerSeller, isPending: isRegistering } = useMutation({
     mutationFn: async (d: SellerPayload) => await SellerRegisterUserRequest(d),
     onSuccess(data) {
@@ -83,7 +77,7 @@ export const SellerFirstStepData = ({ state, dispatch }: Props) => {
   const validateForm = () => {
     const requiredField = ["email", "mobile", "password", "confirmPassword"];
     const error: Record<string, string> = {};
-    requiredField.map((v, i) => {
+    requiredField.map((v) => {
       if (!state.formData[v as keyof typeof state.formData]) {
         error[v] = "this field is required";
       }
@@ -138,7 +132,7 @@ export const SellerFirstStepData = ({ state, dispatch }: Props) => {
       });
       return false;
     }
-    mutate({ gmail: state.formData.email, role: "seller" });
+    // mutate({ gmail: state.formData.email, role: "seller" });
   };
 
   useEffect(() => {
@@ -157,11 +151,11 @@ export const SellerFirstStepData = ({ state, dispatch }: Props) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (sellerData && token) {
-      navigate("/seller/dashboard");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (sellerData && token) {
+  //     navigate("/seller/dashboard");
+  //   }
+  // }, []);
 
   return (
     <div>
@@ -216,7 +210,7 @@ export const SellerFirstStepData = ({ state, dispatch }: Props) => {
                   </span>
                 ) : (
                   <span className="text-sm font-semibold text-blue-600">
-                    {isPending ? "Sending..." : "Send Otp"}
+                    {/* {isPending ? "Sending..." : "Send Otp"} */}
                   </span>
                 )}
               </Button>

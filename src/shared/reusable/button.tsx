@@ -28,9 +28,6 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      // className={cn(
-      //   `cursor-pointer ${className} ${ButtonBgColour[variant]} ${ButtonSize[size]}`,
-      // )}
       className={cn(
         "rounded cursor-pointer transition-colors",
         ButtonBgColour[variant],

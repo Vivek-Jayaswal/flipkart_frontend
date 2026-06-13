@@ -114,7 +114,7 @@ export const SellerDashboard = () => {
       "bankName",
     ];
     const error: Record<string, string> = {};
-    requiredField.map((v, i) => {
+    requiredField.map((v) => {
       if (!form.formData[v as keyof typeof form.formData]) {
         error[v] = "this field is required";
       }

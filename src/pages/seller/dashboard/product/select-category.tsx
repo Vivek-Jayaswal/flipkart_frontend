@@ -65,10 +65,10 @@ const SelectCategory: React.FC<CategoryCascaderProps> = ({
 
     if (node.children && node?.children?.length > 0) {
       // Open its children in the next adjacent column layer
-      const updatedColumns = [
-        ...visibleColumns.slice(0, colIndex + 1),
-        node.children,
-      ];
+      // const updatedColumns = [
+      //   ...visibleColumns.slice(0, colIndex + 1),
+      //   node.children,
+      // ];
       // setVisibleColumns(updatedColumns);
     } else {
       // Leaf node selected: update parent state, map value ID, close modal panel

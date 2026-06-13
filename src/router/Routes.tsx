@@ -17,20 +17,22 @@ import { AdminLayout } from "../layout/admin-layout";
 import { AdminPublicProtectedRoute } from "./protected-gaurds/admin-protectd-route";
 import ProductAddPage from "../pages/seller/dashboard/product/createProduct";
 import { ProductListPage } from "../pages/seller/dashboard/product/product-list";
+import { ProductMainDetail } from "../pages/buyer/home-page/product-details";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    loader: async () => {
-      return null;
-    },
     children: [
       { path: "/cart", element: <div>Element</div> },
       {
         path: "",
         element: <CategoryNavbar />,
         children: [...HomePageRoutes],
+      },
+      {
+        path: "/product-details/:name/:id",
+        element: <ProductMainDetail />,
       },
       { path: "more", element: <h1>more</h1> },
       { path: "login", element: <BuyerLogin /> },
@@ -40,6 +42,7 @@ export const router = createBrowserRouter([
 
   {
     path: "/seller",
+
     element: (
       <PublicSellerRoute>
         <SellerLayout />

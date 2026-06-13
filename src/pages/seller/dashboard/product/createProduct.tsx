@@ -47,10 +47,6 @@ export default function ProductAddPage() {
     }));
   };
 
-  const validateFormData = () => {
-    const requiredFields = ["name", "description", "shortDescription"];
-  };
-
   return (
     <div className="min-h-screen bg-[#f6f7fb] flex">
       {/* SIDEBAR */}

@@ -6,27 +6,29 @@ import {
   RefreshCw,
   Tag,
 } from "lucide-react";
-import { NavItem } from "../nav-item";
-import { Button } from "../../reusable/button";
+// import { NavItem } from "../nav-item";
+// import { Button } from "../../reusable/button";
 import { useReducer } from "react";
 import { useLocation } from "react-router-dom";
+import { NavItem } from "../../../components/navbar/nav-item";
+import { Button } from "../../../shared/reusable/button";
 
-const sidebarItems = [
-  { name: "Home", path: "." },
-  { name: "Listings", path: "listing" },
-  { name: "Orders", path: "order" },
-  { name: "Returns", path: "return" },
-  { name: "Payments", path: "payments" },
-  { name: "Payouts", path: "payouts" },
-  { name: "Reports", path: "reports" },
-  { name: "Advertising", path: "advertising" },
-  { name: "Growth", path: "growth" },
-  { name: "Inventory", path: "inventory" },
-  { name: "Pricing", path: "pricing" },
-  { name: "Quality", path: "quality" },
-  { name: "Support", path: "support" },
-  { name: "Settings", path: "setting" },
-];
+// const sidebarItems = [
+//   { name: "Home", path: "." },
+//   { name: "Listings", path: "listing" },
+//   { name: "Orders", path: "order" },
+//   { name: "Returns", path: "return" },
+//   { name: "Payments", path: "payments" },
+//   { name: "Payouts", path: "payouts" },
+//   { name: "Reports", path: "reports" },
+//   { name: "Advertising", path: "advertising" },
+//   { name: "Growth", path: "growth" },
+//   { name: "Inventory", path: "inventory" },
+//   { name: "Pricing", path: "pricing" },
+//   { name: "Quality", path: "quality" },
+//   { name: "Support", path: "support" },
+//   { name: "Settings", path: "setting" },
+// ];
 
 type Action = {
   type: "UPDATE_ACTIVE_ROUTE";

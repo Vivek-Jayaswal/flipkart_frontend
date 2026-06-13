@@ -1,6 +1,6 @@
 import { User } from "lucide-react";
 import { useState } from "react";
-import { Button } from "../../reusable/button";
+// import { Button } from "../../reusable/button";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../../feature/store";
 import { useMutation } from "@tanstack/react-query";
@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { userLogout } from "../../../services/mutation/login";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../feature/authSlice/sellerAuthSlice";
+import { Button } from "../../../shared/reusable/button";
 
 const SellerProfile = () => {
   const { data } = useSelector((state: RootState) => state.sellerAuth);

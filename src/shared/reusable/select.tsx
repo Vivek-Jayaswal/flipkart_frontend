@@ -1,17 +1,17 @@
-import { createContext, useContext } from "react";
-import { SelectContextType } from "../../types/select";
+// import { createContext, useContext } from "react";
+// import { SelectContextType } from "../../types/select";
 
-const SelectContext = createContext<SelectContextType | null>(null);
+// const SelectContext = createContext<SelectContextType | null>(null);
 
-function useSelect() {
-  const context = useContext(SelectContext);
+// function useSelect() {
+//   const context = useContext(SelectContext);
 
-  if (!context) {
-    throw new Error("Select components must be inside Select");
-  }
+//   if (!context) {
+//     throw new Error("Select components must be inside Select");
+//   }
 
-  return context;
-}
+//   return context;
+// }
 
 type SelectProps = {
   children: React.ReactNode;
@@ -59,6 +59,6 @@ type SelectItemProps = {
   children: React.ReactNode;
 };
 
-export const SelectItem = ({ value, children }: SelectItemProps) => {
+export const SelectItem = ({ children }: SelectItemProps) => {
   return <div>{children}</div>;
 };
