@@ -31,7 +31,7 @@ export default function SellerOnboardingProtectedRoute({
   }
 
   if (isSellerProfileCompleted) {
-    return <Navigate to="/seller/dashboard/home" />;
+    return <Navigate to="/seller/dashboard" />;
   }
 
   return <>{children}</>;

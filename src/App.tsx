@@ -2,9 +2,7 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./router/Routes";
 import { AuthInitializer } from "./router/AuthInitializer";
 
-function App() {
-  console.log("calling");
-  
+function App() {  
   return (
     <AuthInitializer>
       <RouterProvider router={router} />

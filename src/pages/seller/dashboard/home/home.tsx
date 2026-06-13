@@ -57,22 +57,22 @@ export default function HomePage() {
     },
   ];
 
-  const sidebarItems = [
-    "Home",
-    "Listings",
-    "Orders",
-    "Returns",
-    "Payments",
-    "Payouts",
-    "Reports",
-    "Advertising",
-    "Growth",
-    "Inventory",
-    "Pricing",
-    "Quality",
-    "Support",
-    "Settings",
-  ];
+  // const sidebarItems = [
+  //   "Home",
+  //   "Listings",
+  //   "Orders",
+  //   "Returns",
+  //   "Payments",
+  //   "Payouts",
+  //   "Reports",
+  //   "Advertising",
+  //   "Growth",
+  //   "Inventory",
+  //   "Pricing",
+  //   "Quality",
+  //   "Support",
+  //   "Settings",
+  // ];
 
   return (
     <div className="flex min-h-screen bg-[#f5f6fa] text-gray-800">

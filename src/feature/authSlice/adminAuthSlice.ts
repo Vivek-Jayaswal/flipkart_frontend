@@ -37,7 +37,7 @@ const adminAuthSlice = createSlice({
   name: "adminAuth",
   initialState,
   reducers: {
-    loginAdmin: (state, action) => {
+    loginAdmin: (state) => {
       state.isAuthenticated = true;
       state.accessToken = "";
       state.user = initialState.user;
@@ -50,14 +50,14 @@ const adminAuthSlice = createSlice({
       state.user = initialState.user;
       state.error = null;
     });
-    builder.addCase(verifyAdminAuth.fulfilled, (state, action) => {
+    builder.addCase(verifyAdminAuth.fulfilled, (state) => {
       state.isVerified = true;
       state.isAuthenticated = true;
       //   state.user = action.payload;
       state.user = initialState.user;
       state.isLoading = false;
     });
-    builder.addCase(verifyAdminAuth.rejected, (state, action) => {
+    builder.addCase(verifyAdminAuth.rejected, (state) => {
       state.isAuthenticated = false;
       state.user = initialState.user;
       state.isLoading = false;
@@ -65,7 +65,6 @@ const adminAuthSlice = createSlice({
     });
   },
 });
-
 
 export const { loginAdmin } = adminAuthSlice.actions;
 export default adminAuthSlice.reducer;
