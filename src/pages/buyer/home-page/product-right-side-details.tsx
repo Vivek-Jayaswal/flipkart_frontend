@@ -1,8 +1,10 @@
-import { useMemo, useState } from "react";
+import React, { SetStateAction, useMemo } from "react";
 import {
   BadgeCheck,
   MapPin,
+  Minus,
   PackageCheck,
+  Plus,
   ShieldCheck,
   Star,
   Tag,
@@ -13,12 +15,15 @@ import { RotateCcw, LockKeyhole } from "lucide-react";
 import { ProductDetails, Variant } from "../../../types/buyer/product";
 import { VariantSelector } from "./variant-selector";
 import { Details } from "./details";
+import { Button } from "../../../shared/reusable/button";
 
 type props = {
   data: ProductDetails;
   selectedVariant?: Variant;
   selectedVariantId: string;
   onSelectedVariantId: (id: string) => void;
+  quantity: number;
+  setQuantity: React.Dispatch<SetStateAction<number>>;
 };
 
 const formatCurrency = (value?: number) =>
@@ -34,8 +39,10 @@ export const ProductRightSideDetails = ({
   selectedVariant,
   selectedVariantId,
   onSelectedVariantId,
+  quantity,
+  setQuantity,
 }: props) => {
-  const [quantity, setQuantity] = useState(1);
+  // const [quantity, setQuantity] = useState(1);
   const variant = selectedVariant ?? data.variants?.[0];
   const discount = getDiscount(variant?.price, variant?.salePrice);
   const product = data;
@@ -47,9 +54,7 @@ export const ProductRightSideDetails = ({
       ) ?? [],
     [variant],
   );
-  const highlights = data.specifications?.slice(0, 5) ?? [];
-
-  console.log(highlights);
+  // const highlights = data.specifications?.slice(0, 5) ?? [];
 
   return (
     <div className="min-w-0 space-y-5">
@@ -185,21 +190,23 @@ export const ProductRightSideDetails = ({
       <section className="flex flex-wrap border-b border-gray-200 pb-4 mb-4 items-center gap-4">
         <span className="font-semibold text-slate-950">Quantity:</span>
         <div className="grid grid-cols-3 overflow-hidden rounded border border-slate-300">
-          <button
-            className="h-10 w-12 text-xl"
+          <Button
+            variant="outline"
+            className="h-10 rounded-none border-none w-12 text-xl"
             onClick={() => setQuantity((current) => Math.max(1, current - 1))}
           >
-            -
-          </button>
+            <Minus size={14} />
+          </Button>
           <span className="grid h-10 w-12 place-items-center border-x border-slate-300 font-semibold">
             {quantity}
           </span>
-          <button
-            className="h-10 w-12 text-xl"
+          <Button
+            variant="outline"
+            className="h-10 rounded-none border-none w-12 text-xl"
             onClick={() => setQuantity((current) => Math.min(10, current + 1))}
           >
-            +
-          </button>
+            <Plus size={14} />
+          </Button>
         </div>
         <span className="text-sm text-slate-500">(Max 10)</span>
       </section>

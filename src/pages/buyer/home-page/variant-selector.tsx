@@ -1,3 +1,4 @@
+import { baseUrl } from "../../../lib/api";
 import { Variant } from "../../../types/buyer/product";
 
 type props = {
@@ -32,7 +33,7 @@ export const VariantSelector = ({ onClick, data, activeVariantId }: props) => {
         >
           {d.images?.[0]?.url ? (
             <img
-              src={d.images[0].url}
+              src={`${baseUrl}${d.images[0].url}`}
               alt={getVariantLabel(d)}
               className="h-14 w-full rounded object-cover object-center"
             />

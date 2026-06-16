@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
 import { Heart, Maximize2, ShoppingCart, Zap } from "lucide-react";
 import { ProductDetails, Variant } from "../../../types/buyer/product";
+import { baseUrl } from "../../../lib/api";
+import { Button } from "../../../shared/reusable/button";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../../feature/cartSlice/cartSlice";
 
 type props = {
   data: ProductDetails;
   selectedVariant?: Variant;
+  quantity: number;
 };
 
-export const ProductLeftSideDetails = ({ data, selectedVariant }: props) => {
+export const ProductLeftSideDetails = ({
+  data,
+  selectedVariant,
+  quantity,
+}: props) => {
   const [showImage, setShowImage] = useState<{
     url: string;
     public_id: string;
@@ -15,6 +24,8 @@ export const ProductLeftSideDetails = ({ data, selectedVariant }: props) => {
     url: "",
     public_id: "",
   });
+
+  const dispatch = useDispatch();
 
   const productImages = [
     data.thumbnail,
@@ -26,6 +37,24 @@ export const ProductLeftSideDetails = ({ data, selectedVariant }: props) => {
       images.findIndex((item) => item?.public_id === image.public_id) === index
     );
   });
+
+  const onHandleAddToCart = () => {
+    dispatch(
+      addToCart({
+        productId: data?._id || "",
+        productName: data?.title || "",
+        productSlug: data?.slug || "",
+        variantId: selectedVariant?._id || "",
+        brandName: data?.brand?.name || "",
+        brandId: data?.brand?._id || "",
+        attributes: selectedVariant?.attributes || [],
+        price: selectedVariant?.price || 0,
+        salePrice: selectedVariant?.salePrice || 0,
+        thumbnail: selectedVariant?.images[0].url || "",
+        quantity: quantity,
+      }),
+    );
+  };
 
   useEffect(() => {
     const variantImage = selectedVariant?.images?.[0];
@@ -52,7 +81,7 @@ export const ProductLeftSideDetails = ({ data, selectedVariant }: props) => {
               aria-label={`Show product image ${index + 1}`}
             >
               <img
-                src={image.url}
+                src={`${baseUrl}${image.url}`}
                 alt={`${data.title} thumbnail ${index + 1}`}
                 className="h-full w-full rounded object-cover"
               />
@@ -76,7 +105,11 @@ export const ProductLeftSideDetails = ({ data, selectedVariant }: props) => {
             <Heart size={20} />
           </button>
           <img
-            src={showImage.url ? showImage.url : data.thumbnail?.url}
+            src={
+              showImage.url
+                ? `${baseUrl}${showImage.url}`
+                : `${baseUrl}${data.thumbnail?.url}`
+            }
             className="max-h-full max-w-full rounded object-contain"
             alt={data.title}
           />
@@ -94,14 +127,17 @@ export const ProductLeftSideDetails = ({ data, selectedVariant }: props) => {
       </div>
 
       <div className="mt-5 grid grid-cols-2 gap-3">
-        <button className="flex items-center justify-center gap-2 rounded bg-orange-500 px-4 py-3 font-semibold text-white transition hover:bg-orange-600">
+        <Button
+          onClick={onHandleAddToCart}
+          className="flex items-center justify-center gap-2 rounded bg-orange-500 px-4 py-3 font-semibold text-white transition hover:bg-orange-600"
+        >
           <ShoppingCart size={20} />
           Add to Cart
-        </button>
-        <button className="flex items-center justify-center gap-2 rounded bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700">
+        </Button>
+        <Button className="flex items-center justify-center gap-2 rounded bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700">
           <Zap size={20} />
           Buy Now
-        </button>
+        </Button>
       </div>
     </div>
   );

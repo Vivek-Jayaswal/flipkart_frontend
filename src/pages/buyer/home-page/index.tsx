@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryGetAllProduct } from "../../../services/query/home";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../../../lib/api";
 export const Home = () => {
   const { data } = useQuery(queryGetAllProduct());
 
@@ -20,7 +21,11 @@ export const Home = () => {
             onClick={() => handleClick(d._id, d.slug)}
           >
             <div className="bg-[#F5F5F5] p-4 rounded-lg">
-              <img src={d.thumbnail.url} alt="" className="w-full h-60" />
+              <img
+                src={`${baseUrl}${d.thumbnail.url}`}
+                alt=""
+                className="w-full h-60"
+              />
             </div>
             <div className="pt-2 space-y-1">
               <h1 className="font-bold">{d.title}</h1>
