@@ -18,13 +18,14 @@ import { AdminPublicProtectedRoute } from "./protected-gaurds/admin-protectd-rou
 import ProductAddPage from "../pages/seller/dashboard/product/createProduct";
 import { ProductListPage } from "../pages/seller/dashboard/product/product-list";
 import { ProductMainDetail } from "../pages/buyer/home-page/product-details";
+import { Cart } from "../pages/buyer/cart/cart";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { path: "/cart", element: <div>Element</div> },
+      { path: "/cart", element: <Cart /> },
       {
         path: "",
         element: <CategoryNavbar />,

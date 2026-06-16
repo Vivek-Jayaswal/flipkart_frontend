@@ -12,6 +12,7 @@ import { productDetailsReducer } from "../../../feature/productSlice/productSlic
 import { ChevronRight } from "lucide-react";
 
 export const ProductMainDetail = () => {
+  const [quantity, setQuantity] = useState(1);
   const { id } = useParams();
   const { data, isLoading } = useQuery(queryGetProductDetails(id));
   const dispatch = useDispatch();
@@ -58,12 +59,15 @@ export const ProductMainDetail = () => {
           <div className="grid gap-6 rounded border border-slate-200 bg-white p-4 shadow-sm lg:grid-cols-[1.5fr_2fr]">
             <div>
               <ProductLeftSideDetails
+                quantity={quantity}
                 data={product as ProductDetails}
                 selectedVariant={selectedVariant}
               />
             </div>
             <ProductRightSideDetails
               data={product as ProductDetails}
+              quantity={quantity}
+              setQuantity={setQuantity}
               selectedVariant={selectedVariant}
               selectedVariantId={selectedVariantId}
               onSelectedVariantId={setSelectedVariantId}
