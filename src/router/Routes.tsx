@@ -19,6 +19,7 @@ import ProductAddPage from "../pages/seller/dashboard/product/createProduct";
 import { ProductListPage } from "../pages/seller/dashboard/product/product-list";
 import { ProductMainDetail } from "../pages/buyer/home-page/product-details";
 import { Cart } from "../pages/buyer/cart/cart";
+import SellerLandingPage from "../pages/seller/seller-landing-page/SellerLanding";
 
 export const router = createBrowserRouter([
   {
@@ -52,7 +53,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <h1>seller</h1>,
+        element: <SellerLandingPage />,
       },
       {
         path: "signup",

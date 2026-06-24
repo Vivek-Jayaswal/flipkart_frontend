@@ -3,3 +3,26 @@
 ::-webkit-scrollbar {
   display: none;
 }
+
+:root {
+  /* background */
+  --bg-primary: #f9fafb;
+  --bg-secondary: #fb641b;
+  --bg-third: #fb641b;
+
+  /* button */
+  --btn-primary: #0057d9;
+  --btn-secondary: #3a8dff;
+  --btn-tertiary: #fb641b;
+
+  /* text */
+  --text-primary: black;
+  --text-secondary: black;
+  --text-tertiary: black;
+
+  /* other */
+  --error: #ff4d4f;
+  --sucess: #22c55e;
+  --link-action: #0057d9;
+  --highlight: #ffc107;
+}

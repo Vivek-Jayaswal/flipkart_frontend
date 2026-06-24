@@ -11,7 +11,8 @@ type Props = {
   helightWhenActive?: boolean;
   activeClassName?: string;
   className?: string;
-  // end :
+  totalCount?: number;
+  totalCountClassName?: string;
 };
 
 export function NavItem({
@@ -23,6 +24,8 @@ export function NavItem({
   helightWhenActive,
   activeClassName,
   className,
+  totalCount = 0,
+  totalCountClassName,
 }: Props) {
   const [open, setOpen] = useState(false);
 
@@ -58,6 +61,16 @@ export function NavItem({
         {Icon2 && <Icon2 size={16} />}
       </NavLink>
       {open && popover}
+      {totalCount > 0 && (
+        <p
+          className={cn(
+            "text-[10px] absolute -top-1 -right-1 h-5 w-5 rounded-full flex items-center justify-center bg-amber-500",
+            totalCountClassName,
+          )}
+        >
+          {totalCount}
+        </p>
+      )}
     </div>
   );
 }

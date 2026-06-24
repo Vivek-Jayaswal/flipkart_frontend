@@ -11,23 +11,6 @@ import { Button } from "../../../shared/reusable/button";
 import { useReducer } from "react";
 import { useLocation } from "react-router-dom";
 
-// const sidebarItems = [
-//   { name: "Home", path: "." },
-//   { name: "Listings", path: "listing" },
-//   { name: "Orders", path: "order" },
-//   { name: "Returns", path: "return" },
-//   { name: "Payments", path: "payments" },
-//   { name: "Payouts", path: "payouts" },
-//   { name: "Reports", path: "reports" },
-//   { name: "Advertising", path: "advertising" },
-//   { name: "Growth", path: "growth" },
-//   { name: "Inventory", path: "inventory" },
-//   { name: "Pricing", path: "pricing" },
-//   { name: "Quality", path: "quality" },
-//   { name: "Support", path: "support" },
-//   { name: "Settings", path: "setting" },
-// ];
-
 type Action = {
   type: "UPDATE_ACTIVE_ROUTE";
   payload: { name: string };
