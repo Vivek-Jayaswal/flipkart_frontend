@@ -17,26 +17,24 @@ export const Cart = () => {
 
   if (cartItem.length <= 0) {
     return (
-      <div>
-        <div className="rounded shadow-[0px_0px_5px_#F1F3F6] border border-gray-200 p-4 mt-8 flex flex-col justify-center items-center">
-          <div className="h-30 w-40">
-            <img
-              src="/empty-cart.png"
-              alt=""
-              className="w-full object-contain h-full"
-            />
+      <div className="max-h-screen rounded shadow-[0px_0px_5px_#F1F3F6] border border-gray-200 p-4 mt-8 flex flex-col justify-center items-center">
+        <div className="h-30 w-40">
+          <img
+            src="/empty-cart.png"
+            alt=""
+            className="w-full object-contain h-full"
+          />
+        </div>
+        <div className="mt-4 flex flex-col items-center gap-4">
+          <div className="text-center">
+            <h3 className="text-2xl text-gray-600 font-bold">
+              Your Cart Is Empty
+            </h3>
+            <p className="text-gray-400">
+              Add products you like and they will appear here.
+            </p>
           </div>
-          <div className="mt-4 flex flex-col items-center gap-4">
-            <div className="text-center">
-              <h3 className="text-2xl text-gray-600 font-bold">
-                Your Cart Is Empty
-              </h3>
-              <p className="text-gray-400">
-                Add products you like and they will appear here.
-              </p>
-            </div>
-            <Button onClick={() => navigate("/")}>Shop Now</Button>
-          </div>
+          <Button onClick={() => navigate("/")}>Shop Now</Button>
         </div>
       </div>
     );

@@ -64,7 +64,7 @@ export default function CategoryNavbar() {
           );
         })}
       </div>
-      <div className="bg-gray-50 p-2">
+      <div className="bg-(--bg-primary) p-2">
         <Outlet />
       </div>
     </div>

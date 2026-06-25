@@ -9,11 +9,15 @@ import { NavItem } from "./nav-item";
 import { LoginPopover } from "./login-popover";
 import { MorePopover } from "./more-popover";
 import TopBar from "./top-bar";
-import { CartPopover } from "./cart-popover";
 import { useState } from "react";
+import { Button } from "../../shared/reusable/button";
+import { useSelector } from "react-redux";
+import { RootState } from "../../feature/store";
 
 export function NavBar() {
   const [input, setInput] = useState<string>("");
+  const [isShowMore, setIsShowMore] = useState<boolean>(false);
+  const { totalItem } = useSelector((state: RootState) => state.cart);
 
   return (
     <div className="sticky top-0 left-0 bg-white z-[999]">
@@ -39,18 +43,27 @@ export function NavBar() {
             to="/login"
             popover={<LoginPopover />}
           />
-          <NavItem
-            name="More"
-            Icon2={ChevronDown}
-            to="/more"
-            popover={<MorePopover />}
-          />
+
+          <div
+            className="relative"
+            onMouseEnter={() => setIsShowMore(true)}
+            onMouseLeave={() => setIsShowMore(false)}
+          >
+            <Button
+              type="button"
+              variant="outline"
+              className="border-none hover:bg-transparent flex items-center gap-1"
+            >
+              More <ChevronDown size={16} />
+            </Button>
+            {isShowMore && <MorePopover />}
+          </div>
+
           <NavItem
             name="Cart"
             Icon={ShoppingCart}
-            Icon2={ChevronDown}
             to="/cart"
-            popover={<CartPopover />}
+            totalCount={totalItem}
           />
         </div>
       </div>

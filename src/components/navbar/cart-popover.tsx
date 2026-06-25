@@ -1,4 +1,11 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../../feature/store";
+
 export function CartPopover() {
+  const { cartItem } = useSelector((state: RootState) => state.cart);
+
+  console.log(cartItem);
+
   return (
     <div className="absolute top-full -right-4 mt-2 w-64 bg-white shadow-lg rounded-lg p-4 z-50">
       <p className="text-sm font-medium">Your Cart is empty</p>

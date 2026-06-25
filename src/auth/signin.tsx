@@ -86,7 +86,7 @@ export function Login({ role }: { role: "buyer" | "seller" | "admin" }) {
 
   return (
     <div className="h-[70%] w-full">
-      <div className="w-[80%] m-auto h-full grid grid-cols-[1.3fr_2fr] shadow-[0px_0px_5px_#e5e7eb] mt-4">
+      <div className="w-[80%] m-auto h-full grid grid-cols-[1.3fr_2fr] bg-white shadow-[0px_0px_5px_#e5e7eb] mt-4">
         <div className="flex flex-col items-start justify-between bg-blue-500 px-6 py-8">
           <div className="space-y-2">
             <h2 className="text-3xl font-semibold text-white">Login</h2>
