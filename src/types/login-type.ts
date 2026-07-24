@@ -26,6 +26,12 @@ export type InititalState = {
   isLoading: boolean;
   isVerified: boolean;
   error: string | null;
+  userData: {
+    gmail: string;
+    mobile: string;
+    name: string;
+    address: string;
+  };
 };
 
 export type AuthUserData = {

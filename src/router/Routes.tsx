@@ -20,13 +20,18 @@ import { ProductListPage } from "../pages/seller/dashboard/product/product-list"
 import { ProductMainDetail } from "../pages/buyer/home-page/product-details";
 import { Cart } from "../pages/buyer/cart/cart";
 import SellerLandingPage from "../pages/seller/seller-landing-page/SellerLanding";
+import { cartRoutes } from "../pages/buyer/cart/$routes";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { path: "/cart", element: <Cart /> },
+      {
+        path: "/cart",
+        element: <Cart />,
+        // children : [...cartRoutes],
+      },
       {
         path: "",
         element: <CategoryNavbar />,
@@ -36,11 +41,28 @@ export const router = createBrowserRouter([
         path: "/product-details/:name/:id",
         element: <ProductMainDetail />,
       },
-      { path: "more", element: <h1>more</h1> },
       { path: "login", element: <BuyerLogin /> },
       { path: "signup", element: <BuyerSignup /> },
     ],
   },
+  // {
+  //   path: "/",
+  //   element: <Layout />,
+  //   children: [
+  //     { path: "/cart", element: <Cart /> },
+  //     {
+  //       path: "",
+  //       element: <CategoryNavbar />,
+  //       children: [...HomePageRoutes],
+  //     },
+  //     {
+  //       path: "/product-details/:name/:id",
+  //       element: <ProductMainDetail />,
+  //     },
+  //     { path: "login", element: <BuyerLogin /> },
+  //     { path: "signup", element: <BuyerSignup /> },
+  //   ],
+  // },
 
   {
     path: "/seller",

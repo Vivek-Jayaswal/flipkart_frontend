@@ -18,6 +18,8 @@ export function NavBar() {
   const [input, setInput] = useState<string>("");
   const [isShowMore, setIsShowMore] = useState<boolean>(false);
   const { totalItem } = useSelector((state: RootState) => state.cart);
+  const { userData } = useSelector((state: RootState) => state.auth);
+  // console.log(userData.name);
 
   return (
     <div className="sticky top-0 left-0 bg-white z-[999]">
@@ -37,7 +39,7 @@ export function NavBar() {
 
         <div className={"flex justify-between items-center px-10"}>
           <NavItem
-            name="Login"
+            name={userData.name ? userData.name.split(" ")[0] : "Login"}
             Icon={CircleUserRound}
             Icon2={ChevronDown}
             to="/login"

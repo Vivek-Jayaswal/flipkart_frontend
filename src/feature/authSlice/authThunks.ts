@@ -32,12 +32,12 @@ export const verifyBuyerAuth = createAsyncThunk(
       const token = localStorage.getItem(roleToStorageKey["buyer"]);
 
       if (!token) {
-        console.log("No buyer token found");
+        // console.log("No buyer token found");
         return null;
       }
 
       const response = await api.get("/auth/verify-buyer");
-      return response.data.data;
+      return response.data;
     } catch (error: any) {
       localStorage.removeItem(roleToStorageKey["buyer"]);
       return rejectWithValue(error.response?.data);

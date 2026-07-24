@@ -17,6 +17,8 @@ api.interceptors.request.use(
       }
     } else {
       if (buyerToken) {
+        console.log(buyerToken);
+
         config.headers.Authorization = `Bearer ${buyerToken}`;
       }
     }

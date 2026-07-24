@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { loginUser } from "../feature/authSlice/authSlice";
 import { useDispatch } from "react-redux";
 
-export type LoginPayload = { gmail: string; passward: string };
+export type LoginPayload = { gmail: string; passward: string; role: string };
 
 export function Login({ role }: { role: "buyer" | "seller" | "admin" }) {
   const [formData, setFormData] = useState<LoginType>({
@@ -29,11 +29,17 @@ export function Login({ role }: { role: "buyer" | "seller" | "admin" }) {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: LoginPayload) => sendUserLogin(data),
     onSuccess: (res) => {
-      dispatch(loginUser(res));
+      if (res.role === "buyer") {
+        dispatch(loginUser(res));
+      }
+      if (res.role === "admin") {
+      }
       toast.success("Login Successfully");
       navigate("/");
     },
   });
+
+  console.log(formData);
 
   const handleTogglePassword = () => {
     passwordType === "password"
@@ -74,6 +80,7 @@ export function Login({ role }: { role: "buyer" | "seller" | "admin" }) {
     const data: LoginPayload = {
       gmail: formData.gmail,
       passward: formData.password,
+      role: formData.role,
     };
     mutate(data);
   };

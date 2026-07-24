@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { InititalState } from "../../types/login-type";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { InititalState, UserLoginResData } from "../../types/login-type";
 import { verifyBuyerAuth } from "./authThunks";
 
 const token = localStorage.getItem("buyerAccessToken");
@@ -9,6 +9,12 @@ const initialState: InititalState = {
   isAuthenticated: !!token,
   isLoading: false,
   isVerified: false,
+  userData: {
+    name: "",
+    mobile: "",
+    gmail: "",
+    address: "",
+  },
   error: null,
 };
 
@@ -16,12 +22,19 @@ const authSlice = createSlice({
   name: "authSlice",
   initialState,
   reducers: {
-    loginUser: (state, actions) => {
+    loginUser: (state, actions: PayloadAction<UserLoginResData>) => {
       const { token } = actions.payload;
-      state.accessToken = token;
+      const data = actions.payload.data;
+      state.accessToken = token ?? "";
       state.isAuthenticated = true;
       state.isVerified = true;
-      localStorage.setItem("buyerAccessToken", token);
+      state.userData = {
+        name: data.name,
+        gmail: data.email,
+        mobile: data.mobile.toString(),
+        address: data.address,
+      };
+      localStorage.setItem("buyerAccessToken", token ?? "");
     },
     logoutUser: (state) => {
       state.accessToken = null;
@@ -36,18 +49,31 @@ const authSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(verifyBuyerAuth.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isVerified = true;
+      .addCase(
+        verifyBuyerAuth.fulfilled,
+        (state, action: PayloadAction<UserLoginResData>) => {
+          console.log(action.payload.data);
 
-        if (action.payload) {
-          state.accessToken = localStorage.getItem("buyerAccessToken");
+          const d = action.payload.data;
+          state.isLoading = false;
+          state.isVerified = true;
           state.isAuthenticated = true;
-        } else {
-          state.isAuthenticated = false;
-          state.accessToken = null;
-        }
-      })
+
+          if (action.payload) {
+            state.accessToken = localStorage.getItem("buyerAccessToken");
+            state.isAuthenticated = true;
+            state.userData = {
+              name: d.name,
+              mobile: d.mobile.toString(),
+              gmail: d.email,
+              address: d.address,
+            };
+          } else {
+            state.isAuthenticated = false;
+            state.accessToken = null;
+          }
+        },
+      )
       .addCase(verifyBuyerAuth.rejected, (state, action) => {
         state.isLoading = false;
         state.isVerified = true;

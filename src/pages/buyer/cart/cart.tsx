@@ -9,11 +9,22 @@ import {
   removeItemFromCart,
   updateCartQuantity,
 } from "../../../feature/cartSlice/cartSlice";
+import { useEffect, useState } from "react";
+import { CartItem } from "../../../types/buyer/cart";
 
 export const Cart = () => {
   const { totalItem, cartItem } = useSelector((state: RootState) => state.cart);
+  const { isAuthenticated, isVerified } = useSelector(
+    (state: RootState) => state.auth,
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [totalCartItem, setTotalCartItem] = useState<CartItem[]>([]);
+  
+
+  useEffect(() => {
+    // if (userIs)
+  }, [totalItem, isAuthenticated, isVerified]);
 
   if (cartItem.length <= 0) {
     return (

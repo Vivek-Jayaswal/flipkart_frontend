@@ -23,6 +23,9 @@
   /* other */
   --error: #ff4d4f;
   --sucess: #22c55e;
-  --link-action: #0057d9;
+  --link-action: #005 7d9;
   --highlight: #ffc107;
+}
+
+@theme {
 }
